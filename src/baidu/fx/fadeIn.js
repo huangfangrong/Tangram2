@@ -1,4 +1,4 @@
-///import baidu.dom.g;
+///import baidu.extend;
 ///import baidu.fx.opacity;
 
 /// Tangram 1.x Code Start
@@ -28,12 +28,12 @@
  */
 
 baidu.fx.fadeIn = function(element, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.fadeIn");
 
     var fx = baidu.fx.opacity(element,
-        baidu.object.extend({from:0, to:1, restoreAfterFinish:true}, options||{})
+        baidu.extend({from:0, to:1, restoreAfterFinish:true}, options||{})
     );
-    fx.__type = "baidu.fx.fadeIn";
+    fx._type_ = "baidu.fx.fadeIn";
 
     return fx;
 };

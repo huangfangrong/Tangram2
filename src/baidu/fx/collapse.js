@@ -1,9 +1,6 @@
-///import baidu.dom.g;
-///import baidu.dom.hide;
-///import baidu.object.extend;
+///import baidu.extend;
 ///import baidu.fx.create;
 
-/// Tangram 1.x Code Start
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
@@ -31,7 +28,7 @@
  */
 
 baidu.fx.collapse = function(element, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.collapse");
 
     var e = element, 
         value, 
@@ -49,7 +46,7 @@ baidu.fx.collapse = function(element, options) {
             }
         };
 
-    var fx = baidu.fx.create(e, baidu.object.extend({
+    var fx = baidu.fx.create(e, baidu.extend({
         orientation: 'vertical'
         
         //[Implement Interface] initialize
@@ -71,11 +68,10 @@ baidu.fx.collapse = function(element, options) {
         }
 
         //[Implement Interface] finish
-        ,finish : function(){baidu.dom.hide(e);}
+        ,finish : function(){e.style.display = "none";}
     }, options || {}), "baidu.fx.expand_collapse");
 
-    return fx.launch();
+    return fx.play();
 };
 
 // [TODO] 20100509 在元素绝对定位时，收缩到最后时会有一次闪烁
-/// Tangram 1.x Code End

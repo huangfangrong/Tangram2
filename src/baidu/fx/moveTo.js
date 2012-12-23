@@ -1,4 +1,3 @@
-/// support magic - Tangram 1.x Code Start
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
@@ -8,10 +7,9 @@
  * @version: 2010-06-07
  */
 
-///import baidu.dom.g;
 ///import baidu.fx.move;
-///import baidu.object.extend;
-///import baidu.dom.getStyle;
+///import baidu.extend;
+///import baidu.fx.getCurrentStyle;
 
  
 /**
@@ -34,17 +32,15 @@
  * @see baidu.fx.moveTo
  */
 baidu.fx.moveTo = function(element, point, options) {
-    if (!(element = baidu.dom.g(element))
-        || baidu.dom.getStyle(element, "position") == "static"
-        || typeof point != "object") return null;
+    baidu.check("^HTMLElement", "baidu.fx.moveTo");
+    if (baidu.fx.getCurrentStyle(element, "position") == "static") return null;
 
     var p = [point[0] || point.x || 0,point[1] || point.y || 0];
-    var x = parseInt(baidu.dom.getStyle(element, "left")) || 0;
-    var y = parseInt(baidu.dom.getStyle(element, "top"))  || 0;
+    var x = parseInt(baidu.fx.getCurrentStyle(element, "left")) || 0;
+    var y = parseInt(baidu.fx.getCurrentStyle(element, "top"))  || 0;
 
-    var fx = baidu.fx.move(element, baidu.object.extend({x: p[0]-x, y: p[1]-y}, options||{}));
+    var fx = baidu.fx.move(element, baidu.extend({x: p[0]-x, y: p[1]-y}, options||{}));
 
     return fx;
 };
 
-/// support magic - Tangram 1.x Code End

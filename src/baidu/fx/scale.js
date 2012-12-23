@@ -1,8 +1,7 @@
-///import baidu.dom.g;
 ///import baidu.dom.show;
-///import baidu.browser.ie;
-///import baidu.dom.getStyle;
-///import baidu.object.extend;
+///import baidu.browser;
+///import baidu.fx.getCurrentStyle;
+///import baidu.extend;
 ///import baidu.fx.create;
 
 /// Tangram 1.x Code Start
@@ -34,15 +33,15 @@
  * @config      {Function}                oncancel              function(){},//效果被撤销时的回调函数
  */
 baidu.fx.scale = function(element, options) {
-    if (!(element = baidu.dom.g(element))) return null;
-    options = baidu.object.extend({from : 0.1,to : 1}, options || {});
+    baidu.check("^HTMLElement", "baidu.fx.scale");
+    options = baidu.extend({from : 0.1,to : 1}, options || {});
 
     // "0px 0px" "50% 50%" "top left"
     var r = /^(-?\d+px|\d?\d(\.\d+)?%|100%|left|center|right)(\s+(-?\d+px|\d?\d(\.\d+)?%|100%|top|center|bottom))?/i;
     !r.test(options.transformOrigin) && (options.transformOrigin = "0px 0px");
 
     var original = {},
-        fx = baidu.fx.create(element, baidu.object.extend({
+        fx = baidu.fx.create(element, baidu.extend({
         fade: true,
             
         //[Implement Interface] initialize
@@ -61,10 +60,10 @@ baidu.fx.scale = function(element, options) {
                 save("zoom");
                 save("filter");
 
-                this.offsetX = parseInt(baidu.dom.getStyle(element, "left")) || 0;
-                this.offsetY = parseInt(baidu.dom.getStyle(element, "top"))  || 0;
+                this.offsetX = parseInt(baidu.fx.getCurrentStyle(element, "left")) || 0;
+                this.offsetY = parseInt(baidu.fx.getCurrentStyle(element, "top"))  || 0;
 
-                if (baidu.dom.getStyle(element, "position") == "static") {
+                if (baidu.fx.getCurrentStyle(element, "position") == "static") {
                     s.position = "relative";
                 }
 
@@ -149,7 +148,7 @@ baidu.fx.scale = function(element, options) {
         }
     }, options), "baidu.fx.scale");
 
-    return fx.launch();
+    return fx.play();
 };
 
 /// Tangram 1.x Code End

@@ -1,6 +1,6 @@
 ///import baidu.fx.fadeOut;
 ///import baidu.dom.remove;
-///import baidu.object.extend;
+///import baidu.extend;
 
 /// Tangram 1.x Code Start
 /*
@@ -30,7 +30,7 @@
 baidu.fx.remove = function(element, options) {
     var afterFinish = options.onafterfinish ? options.onafterfinish : new Function();
     
-    return baidu.fx.fadeOut(element, baidu.object.extend(options||{}, {
+    return baidu.fx.fadeOut(element, baidu.extend(options||{}, {
         onafterfinish: function(){
             baidu.dom.remove(this.element);
             afterFinish.call(this);

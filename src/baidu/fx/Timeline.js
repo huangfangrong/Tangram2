@@ -1,147 +1,161 @@
-/// support magic - Tangram 1.x Code Start
-/*
- * Tangram
- * Copyright 2010 Baidu Inc. All rights reserved.
- * 
- * @author: meizz
- * @namespace: baidu.fx.Timeline
- * @create: 2010-01-23
- * @version: 2010-07-13
- */
-
 ///import baidu.fx;
-///import baidu.lang.Event;
-///import baidu.lang.Class;
-///import baidu.lang.inherits;
-///import baidu.object.extend;
+///import baidu.isFunction;
+///import baidu.base.inherits;
+///import baidu.base.Class;
 
 /**
- * 提供一个按时间进程的时间线类
+ * @description 提供一个按时间进程的时间线类
+ * @Class
+ * @name baidu.fx.Timeline
+ * @grammer baidu.fx.Timeline([options])
+ * @author meizz
+ * @create 2012-09-28
  *
  * 本类提供两个方法：
+ *  abort()     中断
  *  cancel()    取消操作
  *  end()       直接结束
+ *  pause()     暂停
+ *  play()      启动
+ *
+ * 事件：
+ *  onbeforestart
+ *  onstart
+ *  onupdate
+ *  onfinish
+ *  onafterfinish
+ *  onabort
+ *  oncancel
+ *  onend
+ *  onpause
+ *  ondispose
  *
  * 使用本类时需要实现五个接口：
  *  initialize()            用于类初始化时的操作
- *  transition(percent)    重新计算时间线进度曲线
+ *  transition(percent)     重新计算时间线进度曲线
  *  finish()                用于类结束时时的操作
- *  render(schedule)        每个脉冲在DOM上的效果展现
+ *  render(percent)         每个脉冲在DOM上的效果展现
  *  restore()               效果被取消时作的恢复操作
  *
  * @config {Number} interval 脉冲间隔时间（毫秒）
  * @config {Number} duration 时间线总时长（毫秒）
- * @config {Number} percent  时间线进度的百分比
+ * @config {Number} percent  时间线进度的百分比（0.0-1.0）
+ * @config {Number} delay    延迟（毫秒）
+ * @config {Number} delta    步长，两帧之间的进度差（毫秒）
+ * @config {Number} form     起始点（0.0-1.0）
+ * @config {Number} to       终止点（0.0-1.0）
+ * @config {Number} fps      [可选]最大帧率，设置了这个值后interval会被改写
+ * @config {Number} frames   [可选]最少帧数，可能会做“延时保帧”
  */
- 
- 
- 
-/**
- * 提供一个按时间进程的时间线类
- * @class
- * @grammar new baidu.fx.Timeline(options)
- * @param {Object} options 参数
- * @config {Number} interval 脉冲间隔时间（毫秒）
- * @config {Number} duration 时间线总时长（毫秒）
- * @config {Number} percent  时间线进度的百分比
- */
-baidu.fx.Timeline = function(options){
-    baidu.lang.Class.call(this);
+baidu.fx.Timeline = function(options) {
+    baidu.base.Class.call(this);
 
-    this.interval = 16;
+    this.interval = 12;
     this.duration = 500;
-    this.dynamic  = true;
+    this.percent  = 0;  // 进度，0 到 1 (浮点小数)
+    this.delay    = 0;  // 0立即执行 n延迟n毫秒 -1只实例化不执行(用于效果组合)
+    this.delta    = 0;  // 每次脉冲的间隔步长
+    this.from     = 0;
+    this.to       = 1;
+    this.fps      = 80; // max fps
+    this.frames   = 0;  // min frames
 
-    baidu.object.extend(this, options);
+    baidu.extend(this, options);
 };
-baidu.lang.inherits(baidu.fx.Timeline, baidu.lang.Class, "baidu.fx.Timeline").extend({
-/**
- *  @lends baidu.fx.Timeline.prototype
- */
-    /**
-     * 启动时间线
-     * @return {instance} 类实例
-     */
-    launch : function(){
+
+baidu.base.inherits(baidu.fx.Timeline, baidu.base.Class, "baidu.fx.Timeline").extend({
+
+    launch: function(){return this.play();}
+
+    ,_render_: function(percent){
         var me = this;
-        me.dispatchEvent("onbeforestart");
+
+        me._frame_ ++;
+
+        // 延时保帧
+        if ( me.frames>0 && me._frame_/me.frames<percent ) {
+            me.duration = Math.ceil(me.duration * percent * me.frames / me._frame_);
+            me._endTime_= me._beginTime_ + me.duration;
+        }
+
+        me.delta = percent - me.percent;
+        me.percent = percent;
 
         /**
-        * initialize()接口，当时间线初始化同步进行的操作
-        */
-        typeof me.initialize =="function" && me.initialize();
-
-        me["\x06btime"] = new Date().getTime();
-        me["\x06etime"] = me["\x06btime"] + (me.dynamic ? me.duration : 0);
-        me["\x06pulsed"]();
-
-        return me;
+         * [interface run] render() 用来实现每个脉冲所要实现的效果
+         * @param {Number} percent 时间线的进度
+         */
+        baidu.isFunction( me.render ) && me.render(me.transition(percent));
+        me.fire("onupdate");
     }
+    // 脉冲函数
+    ,_pulsed_: function(first){
+        var me = this
+            , now = new Date().getTime();
 
-    /**
-     * 每个时间脉冲所执行的程序
-     * @ignore
-     * @private
-     */
-    ,"\x06pulsed" : function(){
-        var me = this;
-        var now = new Date().getTime();
-        // 当前时间线的进度百分比
-        me.percent = (now - me["\x06btime"]) / me.duration;
-        me.dispatchEvent("onbeforeupdate");
+        first && (me._endTime_ = (me._beginTime_ = now) + me.duration);
 
-        // 时间线已经走到终点
-        if (now >= me["\x06etime"]){
-            typeof me.render == "function" && me.render(me.transition(me.percent = 1));
+        // 时间线终点
+        if (now >= me._endTime_) {
+            me._render_(1);
+            baidu.isFunction( me.finish ) && me.finish();
 
-            // [interface run] finish()接口，时间线结束时对应的操作
-            typeof me.finish == "function" && me.finish();
-
-            me.dispatchEvent("onafterfinish");
+            me.fire("onfinish");
+            me.fire("onafterfinish");
             me.dispose();
             return;
         }
+        me._render_((now - me._beginTime_) / me.duration);
 
-        /**
-        * [interface run] render() 用来实现每个脉冲所要实现的效果
-        * @param {Number} schedule 时间线的进度
-        */
-        typeof me.render == "function" && me.render(me.transition(me.percent));
-        me.dispatchEvent("onafterupdate");
-
-        me["\x06timer"] = setTimeout(function(){me["\x06pulsed"]()}, me.interval);
+        me._timer_ = setTimeout(function(){me._pulsed_()}, me.interval);
     }
-    /**
-     * 重新计算 schedule，以产生各种适合需求的进度曲线
-     * @function
-     * @param {Function} percent 
-     */
-    ,transition: function(percent) {
-        return percent;
-    }
+    ,transition: function(percent){return percent;}
 
-    /**
-     * 撤销当前时间线的操作，并引发 restore() 接口函数的操作
-     * @function
-     */
-    ,cancel : function() {
-        this["\x06timer"] && clearTimeout(this["\x06timer"]);
-        this["\x06etime"] = this["\x06btime"];
-
-        // [interface run] restore() 当时间线被撤销时的恢复操作
-        typeof this.restore == "function" && this.restore();
-        this.dispatchEvent("oncancel");
-
+    ,abort: function(){
+        this._timer_ && clearTimeout(this._timer_);
+        this.fire("onabort");
         this.dispose();
     }
+    ,cancel: function(){
+        this._timer_ && clearTimeout(this._timer_);
+        this._endTime_ = this._beginTime_;
 
-    /**
-     * 直接将时间线运行到结束点
-     */
-    ,end : function() {
-        this["\x06timer"] && clearTimeout(this["\x06timer"]);
-        this["\x06etime"] = this["\x06btime"];
-        this["\x06pulsed"]();
+        baidu.isFunction( this.restore ) && this.restore();
+        this.fire("oncancel");
+        this.dispose();
+    }
+    ,end: function(){
+        this._timer_ && clearTimeout(this._timer_);
+        this._endTime_ = this._beginTime_;
+        this._pulsed_();
+    }
+    ,pause: function(){
+        this._timer_ && clearTimeout(this._timer_);
+        this.fire("onpause");
+    }
+    ,play: function(){
+        var me = this
+            , first = !me._beginTime_
+            , now = new Date().getTime();
+
+        // first run
+        if (first) {
+            me.fire("onbeforestart");
+            baidu.isFunction( me.initialize ) && me.initialize();
+            me.fire("onstart");
+            me._frame_ = 0;
+            me.interval = Math.floor(1000 / me.fps);
+
+            if (me.delay) {setTimeout(function(){me._pulsed_(first)}, me.delay)}
+            else me._pulsed_(first);
+        
+        // pause replay
+        } else {
+            me._beginTime_ = now - parseInt(me.percent * me.duration);
+            me._endTime_ = me._beginTime_ + me.duration;
+            me._pulsed_();
+        }
+
+        return this;
     }
 });
-/// support magic - Tangram 1.x Code End

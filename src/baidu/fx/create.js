@@ -1,15 +1,16 @@
-/// support magic - support magic - Tangram 1.x Code Start
-/*
- * Tangram
- * Copyright 2010 Baidu Inc. All rights reserved.
- * 
- * @author: meizz
- * @namespace: baidu.fx.create
- * @version: 2010-01-23
- */
-
-///import baidu.lang.Event;
+///import baidu.id;
+///import baidu.regexp;
+///import baidu.global;
 ///import baidu.fx.Timeline;
+///import baidu.string.toCamelCase;
+/**
+ * @description 统一创建动画类
+ * @ahthor meizz
+ * @create 2012-12-01
+ * @function
+ * @name baidu.fx.create
+ * @grammer baidu.fx($dom).create(options, fxName)
+ */
 
 /**
  * 效果基类。
@@ -28,85 +29,73 @@
  */
 baidu.fx.create = function(element, options, fxName) {
     var timeline = new baidu.fx.Timeline(options);
-
+    var maps = baidu.global("_maps_fx");
+    var id = baidu.id(element);
+    timeline.data = maps[id] = maps[id] || {original: {}, guids:{}};
     timeline.element = element;
-    timeline.__type = fxName || timeline.__type;
-    timeline["\x06original"] = {};   // 20100708
-    var catt = "baidu_current_effect";
+    timeline.attName = "att_"+ timeline._type_.replace(baidu.regexp("\\W", "g"), "_");
 
     /**
-     * 将实例的guid记录到DOM元素上，以便多个效果叠加时的处理
+     * @description 保存原始的CSS属性值 20100708
+     * @param   {String}    cssKey  CSS样式名
      */
-    timeline.addEventListener("onbeforestart", function(){
-        var me = this, guid;
-        me.attribName = "att_"+ me.__type.replace(/\W/g, "_");
-        guid = me.element.getAttribute(catt);
-        me.element.setAttribute(catt, (guid||"") +"|"+ me.guid +"|", 0);
-
-        if (!me.overlapping) {
-            (guid = me.element.getAttribute(me.attribName)) 
-                && baiduInstance(guid).cancel();
-
-            //在DOM元素上记录当前效果的guid
-            me.element.setAttribute(me.attribName, me.guid, 0);
-        }
-    });
-
+    timeline.protect = function(cssKey) {
+        cssKey = baidu.string(cssKey).toCamelCase();
+        this.data.original[cssKey] = this.element.style[cssKey];
+    }
     /**
-     * 打扫dom元素上的痕迹，删除元素自定义属性
+     * @description 打扫dom元素上的痕迹，删除元素自定义属性
      */
-    timeline["\x06clean"] = function(e) {
-        var me = this, guid;
-        if (e = me.element) {
-            e.removeAttribute(me.attribName);
-            guid = e.getAttribute(catt);
-            guid = guid.replace("|"+ me.guid +"|", "");
-            if (!guid) e.removeAttribute(catt);
-            else e.setAttribute(catt, guid, 0);
+    timeline._clean_ = function() {
+        var me = this;
+
+        if (me.data) {
+            delete me.data[me.attName];
+            delete me.data.guids[me.guid];
         }
     };
-
     /**
-     * 在时间线结束时净化对DOM元素的污染
+     * @description 时间线结束，恢复那些被改过的CSS属性值
      */
-    timeline.addEventListener("oncancel", function() {
-        this["\x06clean"]();
-        this["\x06restore"]();
-    });
-
-    /**
-     * 在时间线结束时净化对DOM元素的污染
-     */
-    timeline.addEventListener("onafterfinish", function() {
-        this["\x06clean"]();
-        this.restoreAfterFinish && this["\x06restore"]();
-    });
-
-    /**
-     * 保存原始的CSS属性值 20100708
-     */
-    timeline.protect = function(key) {
-        this["\x06original"][key] = this.element.style[key];
-    };
-
-    /**
-     * 时间线结束，恢复那些被改过的CSS属性值
-     */
-    timeline["\x06restore"] = function() {
-        var o = this["\x06original"],
+    timeline._restore_ = function() {
+        var o = this.data.original,
             s = this.element.style,
-            v;
-        for (var i in o) {
-            v = o[i];
-            if (typeof v == "undefined") continue;
+            value, i;
 
-            s[i] = v;    // 还原初始值
+        for (i in o) {
+            value = o[i];
+            if (typeof value == "undefined") continue;
+
+            s[i] = value;    // 还原初始值
 
             // [TODO] 假如以下语句将来达不到要求时可以使用 cssText 操作
-            if (!v && s.removeAttribute) s.removeAttribute(i);    // IE
-            else if (!v && s.removeProperty) s.removeProperty(i); // !IE
+            if (!value && s.removeAttribute) s.removeAttribute(i);    // IE
+            else if (!value && s.removeProperty) s.removeProperty(i); // !IE
         }
     };
+
+    timeline.on("beforestart", function(){
+        var me = this, guid, data = me.data;
+
+        data.guids[me.guid] = true;
+
+        if (!me.overlapping) {
+            // old fx
+            (guid = data[me.attName]) && baiduInstance(guid).cancel();
+            //[TODO]
+    
+            //记录当前效果的guid
+            data[me.attName] = me.guid;
+        }
+
+    }).on("cancel", function(){
+        this._clean_();
+        this._restore_();
+
+    }).on("afterfinish", function(){
+        this._clean_();
+        this.restoreAfterFinish && this._restore_();
+    });
 
     return timeline;
 };

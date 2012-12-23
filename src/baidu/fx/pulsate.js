@@ -1,5 +1,4 @@
-///import baidu.dom.g;
-///import baidu.object.extend;
+///import baidu.extend;
 ///import baidu.fx.create;
 
 /// Tangram 1.x Code Start
@@ -28,12 +27,12 @@
  * @config      {Function}                oncancel              function(){},//效果被撤销时的回调函数
  */
 baidu.fx.pulsate = function(element, loop, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.pulsate");
     if (isNaN(loop) || loop == 0) return null;
 
     var e = element;
 
-    var fx = baidu.fx.create(e, baidu.object.extend({
+    var fx = baidu.fx.create(e, baidu.extend({
         //[Implement Interface] initialize
         initialize : function() {this.protect("visibility");}
 

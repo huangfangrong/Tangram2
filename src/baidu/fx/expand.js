@@ -1,10 +1,8 @@
 ///import baidu.fx.create;
-///import baidu.dom.g;
 ///import baidu.dom.show;
-///import baidu.object.extend;
-///import baidu.array.each;
-///import baidu.dom.getStyle;
-///import baidu.lang.isNumber;
+///import baidu.extend;
+///import baidu.fx.getCurrentStyle;
+///import baidu.type;
 ///import baidu.forEach;
 
 /// Tangram 1.x Code Start
@@ -35,7 +33,7 @@
  */
 
 baidu.fx.expand = function(element, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.expand");
 
     var e = element, 
         value, 
@@ -53,7 +51,7 @@ baidu.fx.expand = function(element, options) {
             }
         };
 
-    var fx = baidu.fx.create(e, baidu.object.extend({
+    var fx = baidu.fx.create(e, baidu.extend({
         orientation: 'vertical'
         
         //[Implement Interface] initialize
@@ -66,9 +64,9 @@ baidu.fx.expand = function(element, options) {
             value = e[attr.offset];
             
             function getStyleNum(d,style){
-                var result = parseInt(baidu.dom.getStyle(d,style));
+                var result = parseInt(baidu.fx.getCurrentStyle(d,style));
                 result = isNaN(result) ? 0 : result;
-                result = baidu.lang.isNumber(result) ? result : 0;
+                result = baidu.isNumber(result) ? result : 0;
                 return result;
             }
             

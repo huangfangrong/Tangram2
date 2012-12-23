@@ -1,6 +1,6 @@
-///import baidu.dom.getStyle;
-///import baidu.object.extend;
+///import baidu.extend;
 ///import baidu.fx.create;
+///import baidu.fx.getCurrentStyle;
 
 /// Tangram 1.x Code Start
 /*
@@ -30,10 +30,11 @@
  * @config      {Function}                oncancel          function(){},//效果被撤销时的回调函数
  */
 baidu.fx.mask = function(element, options) {
+    baidu.check("^HTMLElement", "baidu.fx.mask");
     // mask 效果只适用于绝对定位的DOM元素
-    if (!(element = baidu.dom.g(element)) ||
-        baidu.dom.getStyle(element, "position") != "absolute")
+    if (baidu.fx.getCurrentStyle(element, "position") != "absolute") {
         return null;
+    }
 
     var e = element, original = {};
     options = options || {};
@@ -42,9 +43,9 @@ baidu.fx.mask = function(element, options) {
     var r = /^(\d+px|\d?\d(\.\d+)?%|100%|left|center|right)(\s+(\d+px|\d?\d(\.\d+)?%|100%|top|center|bottom))?/i;
     !r.test(options.startOrigin) && (options.startOrigin = "0px 0px");
 
-    var options = baidu.object.extend({restoreAfterFinish:true, from:0, to:1}, options || {});
+    var options = baidu.extend({restoreAfterFinish:true, from:0, to:1}, options || {});
 
-    var fx = baidu.fx.create(e, baidu.object.extend({
+    var fx = baidu.fx.create(e, baidu.extend({
         //[Implement Interface] initialize
         initialize : function() {
             e.style.display = "";

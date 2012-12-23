@@ -1,6 +1,5 @@
-///import baidu.dom;
-///import baidu.object.extend;
-///import baidu.dom.getStyle;
+///import baidu.extend;
+///import baidu.fx.getCurrentStyle;
 ///import baidu.fx.create;
 
 /// Tangram 1.x Code Start
@@ -30,7 +29,7 @@
  * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
  */
 baidu.fx.shake = function(element, offset, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.shake");
 
     var e = element;
     offset = offset || [];
@@ -40,7 +39,7 @@ baidu.fx.shake = function(element, offset, options) {
         }
     }
 
-    var fx = baidu.fx.create(e, baidu.object.extend({
+    var fx = baidu.fx.create(e, baidu.extend({
         //[Implement Interface] initialize
         initialize : function() {
             this.protect("top");
@@ -48,10 +47,10 @@ baidu.fx.shake = function(element, offset, options) {
             this.protect("position");
             this.restoreAfterFinish = true;
 
-            if (baidu.dom.getStyle(e, "position") == "static") {
+            if (baidu.fx.getCurrentStyle(e, "position") == "static") {
                 e.style.position = "relative";
             }
-            var original = this['\x06original'];
+            var original = this.data.original;
             this.originX = parseInt(original.left|| 0);
             this.originY = parseInt(original.top || 0);
             this.offsetX = tt(offset[0], offset.x, 16);

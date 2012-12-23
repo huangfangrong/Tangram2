@@ -1,7 +1,7 @@
 ///import baidu.fx.create;
 ///import baidu.dom.g;
-///import baidu.dom.getStyle;
-///import baidu.object.extend;
+///import baidu.fx.getCurrentStyle;
+///import baidu.extend;
 ///import baidu.string.formatColor;
 
 /// Tangram 1.x Code Start
@@ -34,15 +34,15 @@
  * @config     {Function}               oncancel           function(){},//效果被撤销时的回调函数
  */
 baidu.fx.highlight = function(element, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.highlight");
 
     var e = element;
 
-    var fx = baidu.fx.create(e, baidu.object.extend({
+    var fx = baidu.fx.create(e, baidu.extend({
         //[Implement Interface] initialize
         initialize : function() {
             var me = this,
-                CS = baidu.dom.getStyle,
+                CS = baidu.fx.getCurrentStyle,
                 FC = baidu.string.formatColor,
                 color = FC(CS(e, "color")) || "#000000",
                 bgc   = FC(CS(e, "backgroundColor"));
@@ -93,7 +93,5 @@ baidu.fx.highlight = function(element, options) {
         }
     }, options || {}), "baidu.fx.highlight");
 
-    return fx.launch();
+    return fx.play();
 };
-
-/// Tangram 1.x Code End

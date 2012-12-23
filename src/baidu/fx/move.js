@@ -9,10 +9,9 @@
  */
 
 
-///import baidu.dom.g;
 ///import baidu.fx.create;
-///import baidu.object.extend;
-///import baidu.dom.getStyle;
+///import baidu.extend;
+///import baidu.fx.getCurrentStyle;
 
  
 /**
@@ -35,13 +34,14 @@
  * 1.0.0开始支持
  */
 baidu.fx.move = function(element, options) {
-    if (!(element = baidu.dom.g(element))
-        || baidu.dom.getStyle(element, "position") == "static") return null;
+    baidu.check("^HTMLElement", "baidu.fx.move");
+
+    if (baidu.fx.getCurrentStyle(element, "position") == "static") return null;
     
-    options = baidu.object.extend({x:0, y:0}, options || {});
+    options = baidu.extend({x:0, y:0}, options || {});
     if (options.x == 0 && options.y == 0) return null;
 
-    var fx = baidu.fx.create(element, baidu.object.extend({
+    var fx = baidu.fx.create(element, baidu.extend({
         //[Implement Interface] initialize
         initialize : function() {
             this.protect("top");

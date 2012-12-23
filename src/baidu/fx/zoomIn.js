@@ -1,5 +1,4 @@
-///import baidu.dom.g;
-///import baidu.object.extend;
+///import baidu.extend;
 ///import baidu.fx.scale;
 
 /// Tangram 1.x Code Start
@@ -30,9 +29,9 @@
  * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
  */
 baidu.fx.zoomIn = function(element, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.zoomIn");
 
-    options = baidu.object.extend({
+    options = baidu.extend({
         to:1
         ,from:0.1
         ,restoreAfterFinish:true

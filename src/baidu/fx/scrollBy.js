@@ -9,9 +9,8 @@
  * @version: 2010-07-14
  */
 
-///import baidu.dom.g;
 ///import baidu.fx.create;
-///import baidu.object.extend;
+///import baidu.extend;
 
  
 /**
@@ -31,13 +30,14 @@
  * @config      {Function}                oncancel              function(){},//效果被撤销时的回调函数
  */
 baidu.fx.scrollBy = function(element, distance, options) {
-    if (!(element = baidu.dom.g(element)) || typeof distance != "object") return null;
+    baidu.check("^HTMLElement", "baidu.fx.scrollBy");
+    if (typeof distance != "object") return null;
     
     var d = {}, mm = {};
     d.x = distance[0] || distance.x || 0;
     d.y = distance[1] || distance.y || 0;
 
-    var fx = baidu.fx.create(element, baidu.object.extend({
+    var fx = baidu.fx.create(element, baidu.extend({
         //[Implement Interface] initialize
         initialize : function() {
             var t = mm.sTop   = element.scrollTop;

@@ -1,7 +1,6 @@
-///import baidu.dom.g;
 ///import baidu.fx.move;
-///import baidu.object.extend;
-///import baidu.dom.getStyle;
+///import baidu.extend;
+///import baidu.fx.getCurrentStyle;
 
 /// Tangram 1.x Code Start
 /*
@@ -34,15 +33,14 @@
  * @see baidu.fx.moveBy
  */
 baidu.fx.moveBy = function(element, distance, options) {
-    if (!(element = baidu.dom.g(element))
-        || baidu.dom.getStyle(element, "position") == "static"
-        || typeof distance != "object") return null;
+    baidu.check("^HTMLElement", "baidu.fx.moveBy");
+    if (baidu.fx.getCurrentStyle(element, "position") == "static") return null;
 
     var d = {};
     d.x = distance[0] || distance.x || 0;
     d.y = distance[1] || distance.y || 0;
 
-    var fx = baidu.fx.move(element, baidu.object.extend(d, options||{}));
+    var fx = baidu.fx.move(element, baidu.extend(d, options||{}));
 
     return fx;
 };

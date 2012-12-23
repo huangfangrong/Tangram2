@@ -1,5 +1,5 @@
 ///import baidu.fx.zoomOut;
-///import baidu.object.extend;
+///import baidu.extend;
 
 /// Tangram 1.x Code Start
 /*
@@ -31,7 +31,7 @@
  */
 baidu.fx.puff = function(element, options) {
     return baidu.fx.zoomOut(element,
-        baidu.object.extend({
+        baidu.extend({
             to:1.8
             ,duration:800
             ,transformOrigin:"50% 50%"

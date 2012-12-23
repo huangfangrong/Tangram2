@@ -1,9 +1,6 @@
-///import baidu.dom.g;
-///import baidu.dom.hide;
-///import baidu.object.extend;
+///import baidu.extend;
 ///import baidu.fx.scale;
 
-/// Tangram 1.x Code Start
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
@@ -31,9 +28,9 @@
  * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
  */
 baidu.fx.zoomOut = function(element, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.zoomOut");
 
-    options = baidu.object.extend({
+    options = baidu.extend({
         to:0.1
         ,from:1
         ,opacityTrend:false
@@ -42,9 +39,8 @@ baidu.fx.zoomOut = function(element, options) {
     },  options||{});
 
     var effect = baidu.fx.scale(element, options);
-    effect.addEventListener("onafterfinish", function(){baidu.dom.hide(this.element);});
+    effect.on("afterfinish", function(){this.element.style.display = "none";});
 
     return effect;
 };
 
-/// Tangram 1.x Code End

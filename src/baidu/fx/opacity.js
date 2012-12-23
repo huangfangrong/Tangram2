@@ -1,7 +1,6 @@
-///import baidu.dom.g;
 ///import baidu.dom.show;
-///import baidu.browser.ie;
-///import baidu.object.extend;
+///import baidu.browser;
+///import baidu.extend;
 ///import baidu.fx.create;
 
 /// Tangram 1.x Code Start
@@ -32,13 +31,13 @@
  */
 
 baidu.fx.opacity = function(element, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.opacity");
 
-    options = baidu.object.extend({from: 0,to: 1}, options||{});
+    options = baidu.extend({from: 0,to: 1}, options||{});
 
     var e = element;
 
-    var fx = baidu.fx.create(e, baidu.object.extend({
+    var fx = baidu.fx.create(e, baidu.extend({
         //[Implement Interface] initialize
         initialize : function() {
             baidu.dom.show(element);
@@ -67,7 +66,7 @@ baidu.fx.opacity = function(element, options) {
         }
     }, options), "baidu.fx.opacity");
 
-    return fx.launch();
+    return fx.play();
 };
 
 /// Tangram 1.x Code End

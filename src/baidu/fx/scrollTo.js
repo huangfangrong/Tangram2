@@ -30,7 +30,8 @@
  * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
  */
 baidu.fx.scrollTo = function(element, point, options) {
-    if (!(element = baidu.dom.g(element)) || typeof point != "object") return null;
+    baidu.check("^HTMLElement", "baidu.fx.scrollTo");
+    if (typeof point != "object") return null;
     
     var d = {};
     d.x = (point[0] || point.x || 0) - element.scrollLeft;

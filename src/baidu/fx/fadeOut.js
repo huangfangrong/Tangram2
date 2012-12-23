@@ -1,5 +1,4 @@
-///import baidu.dom.g;
-///import baidu.dom.hide;
+///import baidu.extend;
 ///import baidu.fx.opacity;
 
 /// Tangram 1.x Code Start
@@ -30,13 +29,13 @@
  * 1.0.0开始支持
  */
 baidu.fx.fadeOut = function(element, options) {
-    if (!(element = baidu.dom.g(element))) return null;
+    baidu.check("^HTMLElement", "baidu.fx.fadeOut");
 
     var fx = baidu.fx.opacity(element,
-        baidu.object.extend({from:1, to:0, restoreAfterFinish:true}, options||{})
+        baidu.extend({from:1, to:0, restoreAfterFinish:true}, options||{})
     );
-    fx.addEventListener("onafterfinish", function(){baidu.dom.hide(this.element);});
-    fx.__type = "baidu.fx.fadeOut";
+    fx.on("afterfinish", function(){this.element.style.display = "none";});
+    fx._type_ = "baidu.fx.fadeOut";
 
     return fx;
 };
