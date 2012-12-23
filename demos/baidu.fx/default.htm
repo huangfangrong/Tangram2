@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="../../src/import.js"></script>
+<script type="text/javascript" src="../../src/import.php?f=baidu.fx.highlight"></script>
+<!--[if lt IE 9]><script type="text/javascript" src="http://fe.baidu.com/doc/webfx/script/html5.js"></script><![endif]-->
+<title>WebFX动画演示</title>
+<style type="text/css">
+html{background:#f6f6f1 url("http://fe.baidu.com/doc/webfx/css/bg-content.png") fixed;}
+body, input, textarea {
+    color: #333;
+    font:14px/1.286 "Lucida Grande","Lucida Sans Unicode","DejaVu Sans",Lucida,Arial,Helvetica,sans-serif;
+    font-weight: 300;
+    line-height: 1.625;
+    margin: auto;
+    text-align: center;
+}
+dl,dt,dd{margin: 0; padding: 0;}
+h1{margin: 0;}
+#wrapper{
+    width: 960px;
+    margin: auto;
+    text-align: left;
+}
+#header{
+    color: #FFF;
+    background-color: #333;
+    border-radius: 5px;
+}
+#header .summary{
+    text-align: right;
+    padding-right: 8px;
+}
+#footer{
+    margin-top: 8px;
+    line-height: 80px;
+    text-align: center;
+    background-color: #f6f6f1;
+    border-radius: 5px;
+}
+#footer a{color:#333;}
+
+/* =Article
+----------------------------------------------- */
+article{
+    margin-top: 8px;
+    padding: 8px;
+    background-color: #FFF;
+    border-radius: 5px;
+}
+article header{
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-left: 5px;
+    border-bottom: 2px solid #888;
+}
+article .content p{text-indent: 2em;}
+article.demo .content td{
+    width:160px;
+    height:100px;
+    position: relative;
+}
+article.demo .content td div{
+    position: absolute;
+    top:0px;
+    left:0px;
+    width: 160px;
+    height: 100px;
+    cursor: pointer;
+    text-align: center;
+    background: transparent url(http://fe.baidu.com/doc/webfx/css/yuan.png) no-repeat;
+}
+article.demo .content td div b{display: block; margin-top:1em;}
+</style>
+</head>
+<body>
+
+<div id="wrapper">
+
+    <header id="header">
+        <h1>百度WebFX动画演示</h1>
+        <div class="summary">2012.12.21 世界末日</div>
+    </header>
+
+    <div id="main">
+
+        <!--## 网页主内容 ##-->
+        <section id="primary">
+            <div id="content">
+
+<article>
+    <header>前 言</header>
+    <div class="content">
+        <p>在本演示文档里，将演示 WebFX.js 里所有脚本动画！</p>
+        <p>这里只演示脚本动画，CSS3动画有单独的演示页面。</p>
+    </div>
+</article>
+
+<article class="demo">
+    <header>演 示</header>
+    <div class="content">
+        <table border="0" cellspacing="20px">
+            <tr>
+                <td>
+                    <div onclick="baidu.fx.collapse(this)">
+                        <b>向上收缩</b>baidu.fx.collapse()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.expand(this)">
+                        <b>向下扩张</b>baidu.fx.expand()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.fadeOut(this)">
+                        <b>渐 隐</b>baidu.fx.fadeOut()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.fadeIn(this)">
+                        <b>渐 显</b>baidu.fx.fadeIn()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.mask(this)">
+                        <b>遮 罩</b>baidu.fx.mask()
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div onclick="baidu.fx.zoomIn(this)">
+                        <b>放 大</b>baidu.fx.zoomIn()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.zoomOut(this)">
+                        <b>缩 小</b>baidu.fx.zoomOut()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.moveBy(this, [50, 50])">
+                        <b>移动（距离）</b>baidu.fx.moveBy()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.moveTo(this, [80, 80])">
+                        <b>移动到</b>baidu.fx.moveTo()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.puff(this)">
+                        <b>膨 胀</b>baidu.fx.puff()
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div onclick="baidu.fx.pulsate(this, 3)">
+                        <b>心 跳</b>baidu.fx.pulsate()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.shake(this)">
+                        <b>颤 抖</b>baidu.fx.shake()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.rotate(this, 90)">
+                        <b>旋 转</b>baidu.fx.rotate()
+                    </div>
+                </td>
+                <td>
+                    <div onclick="baidu.fx.highlight(this)">
+                        <b>高 亮</b>baidu.fx.highlight()
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</article>
+
+            </div>
+        </section>
+
+    </div>
+
+    <footer id="footer">百度 <a href="http://tangram.baidu.com/">Tangram</a> 脚本库 <a href="http://fe.baidu.com/doc/webfx/">WebFX</a> by <a href="http://www.meizz.com/" target="_blank">meizz</a>&reg;</footer>
+</div>
+
+<script type="text/javascript">
+//*
+Import("baidu.fx.expand");
+Import("baidu.fx.collapse");
+Import("baidu.fx.fadeOut");
+Import("baidu.fx.fadeIn");
+Import("baidu.fx.mask");
+
+Import("baidu.fx.zoomIn");
+Import("baidu.fx.zoomOut");
+Import("baidu.fx.moveBy");
+Import("baidu.fx.moveTo");
+Import("baidu.fx.puff");
+
+Import("baidu.fx.shake");
+Import("baidu.fx.pulsate");
+// Import("baidu.fx.highlight");
+Import("baidu.fx.rotate");
+
+Import("baidu.fx.getCurrentStyle");
+
+
+document.ondblclick = function(){
+    baidu.fx.mask("div");
+}
+</script>
+
+</body>
+</html>
