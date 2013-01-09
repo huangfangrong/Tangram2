@@ -31,61 +31,62 @@
  * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
  * @see baidu.fx.collapse
  */
+baidu.fx.extend({
+    expand: function(element, options) {
+        baidu.check("^HTMLElement", "baidu.fx.expand");
 
-baidu.fx.expand = function(element, options) {
-    baidu.check("^HTMLElement", "baidu.fx.expand");
+        var e = element, 
+            value, 
+            attr,
+            attrHV = {
+                "vertical": {
+                    value: 'height',
+                    offset: 'offsetHeight',
+                    stylesValue: ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"]
+                },
+                "horizontal": {
+                    value: 'width',
+                    offset: 'offsetWidth',
+                    stylesValue: ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"]
+                }
+            };
 
-    var e = element, 
-        value, 
-        attr,
-        attrHV = {
-            "vertical": {
-                value: 'height',
-                offset: 'offsetHeight',
-                stylesValue: ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"]
-            },
-            "horizontal": {
-                value: 'width',
-                offset: 'offsetWidth',
-                stylesValue: ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"]
-            }
-        };
-
-    var fx = baidu.fx.create(e, baidu.extend({
-        orientation: 'vertical'
-        
-        //[Implement Interface] initialize
-        ,initialize : function() {
-            attr = attrHV[this.orientation];
-            baidu.dom.show(e);
-            this.protect(attr.value);
-            this.protect("overflow");
-            this.restoreAfterFinish = true;
-            value = e[attr.offset];
+        var fx = baidu.fx.create(e, baidu.extend({
+            orientation: 'vertical'
             
-            function getStyleNum(d,style){
-                var result = parseInt(baidu.fx.getCurrentStyle(d,style));
-                result = isNaN(result) ? 0 : result;
-                result = baidu.isNumber(result) ? result : 0;
-                return result;
+            //[Implement Interface] initialize
+            ,initialize : function() {
+                attr = attrHV[this.orientation];
+                baidu.dom.show(e);
+                this.protect(attr.value);
+                this.protect("overflow");
+                this.restoreAfterFinish = true;
+                value = e[attr.offset];
+                
+                function getStyleNum(d,style){
+                    var result = parseInt(baidu.fx.getCurrentStyle(d,style));
+                    result = isNaN(result) ? 0 : result;
+                    result = baidu.isNumber(result) ? result : 0;
+                    return result;
+                }
+                
+                baidu.forEach(attr.stylesValue, function(item){
+                    value -= getStyleNum(e,item);
+                });
+                e.style.overflow = "hidden";
+                e.style[attr.value] = "1px";
             }
-            
-            baidu.forEach(attr.stylesValue, function(item){
-                value -= getStyleNum(e,item);
-            });
-            e.style.overflow = "hidden";
-            e.style[attr.value] = "1px";
-        }
 
-        //[Implement Interface] transition
-        ,transition : function(percent) {return Math.sqrt(percent);}
+            //[Implement Interface] transition
+            ,transition : function(percent) {return Math.sqrt(percent);}
 
-        //[Implement Interface] render
-        ,render : function(schedule) {
-            e.style[attr.value] = Math.floor(schedule * value) +"px";
-        }
-    }, options || {}), "baidu.fx.expand_collapse");
+            //[Implement Interface] render
+            ,render : function(schedule) {
+                e.style[attr.value] = Math.floor(schedule * value) +"px";
+            }
+        }, options || {}), "baidu.fx.expand_collapse");
 
-    return fx.launch();
-};
+        return fx.launch();
+    }
+});
 /// Tangram 1.x Code End

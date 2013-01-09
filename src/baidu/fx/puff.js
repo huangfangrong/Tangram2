@@ -29,14 +29,16 @@
  * 1.0.0开始支持
  * @see baidu.fx.puff
  */
-baidu.fx.puff = function(element, options) {
-    return baidu.fx.zoomOut(element,
-        baidu.extend({
-            to:1.8
-            ,duration:800
-            ,transformOrigin:"50% 50%"
-        }, options||{})
-    );
-};
+baidu.fx.extend({
+    puff: function(element, options) {
+        return baidu.fx.zoomOut(element,
+            baidu.extend({
+                to:1.8
+                ,duration:800
+                ,transformOrigin:"50% 50%"
+            }, options||{})
+        );
+    }
+});
 
 /// Tangram 1.x Code End

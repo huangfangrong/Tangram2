@@ -26,52 +26,53 @@
  * @config    {Function}              oncancel           function(){},//在onafterfinish与oncancel时默认调用
  * @see baidu.fx.expand
  */
+baidu.fx.extend({
+    collapse: function(element, options) {
+        baidu.check("^HTMLElement", "baidu.fx.collapse");
 
-baidu.fx.collapse = function(element, options) {
-    baidu.check("^HTMLElement", "baidu.fx.collapse");
+        var e = element, 
+            value, 
+            attr,
+            attrHV = {
+                "vertical": {
+                    value: 'height',
+                    offset: 'offsetHeight',
+                    stylesValue: ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"]
+                },
+                "horizontal": {
+                    value: 'width',
+                    offset: 'offsetWidth',
+                    stylesValue: ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"]
+                }
+            };
 
-    var e = element, 
-        value, 
-        attr,
-        attrHV = {
-            "vertical": {
-                value: 'height',
-                offset: 'offsetHeight',
-                stylesValue: ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"]
-            },
-            "horizontal": {
-                value: 'width',
-                offset: 'offsetWidth',
-                stylesValue: ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"]
+        var fx = baidu.fx.create(e, baidu.extend({
+            orientation: 'vertical'
+            
+            //[Implement Interface] initialize
+            ,initialize : function() {
+                attr = attrHV[this.orientation];
+                this.protect(attr.value);
+                this.protect("overflow");
+                this.restoreAfterFinish = true;
+                value = e[attr.offset];
+                e.style.overflow = "hidden";
             }
-        };
 
-    var fx = baidu.fx.create(e, baidu.extend({
-        orientation: 'vertical'
-        
-        //[Implement Interface] initialize
-        ,initialize : function() {
-            attr = attrHV[this.orientation];
-            this.protect(attr.value);
-            this.protect("overflow");
-            this.restoreAfterFinish = true;
-            value = e[attr.offset];
-            e.style.overflow = "hidden";
-        }
+            //[Implement Interface] transition
+            ,transition : function(percent) {return Math.pow(1 - percent, 2);}
 
-        //[Implement Interface] transition
-        ,transition : function(percent) {return Math.pow(1 - percent, 2);}
+            //[Implement Interface] render
+            ,render : function(schedule) {
+                e.style[attr.value] = Math.floor(schedule * value) +"px";
+            }
 
-        //[Implement Interface] render
-        ,render : function(schedule) {
-            e.style[attr.value] = Math.floor(schedule * value) +"px";
-        }
+            //[Implement Interface] finish
+            ,finish : function(){e.style.display = "none";}
+        }, options || {}), "baidu.fx.expand_collapse");
 
-        //[Implement Interface] finish
-        ,finish : function(){e.style.display = "none";}
-    }, options || {}), "baidu.fx.expand_collapse");
-
-    return fx.play();
-};
+        return fx.play();
+    }
+});
 
 // [TODO] 20100509 在元素绝对定位时，收缩到最后时会有一次闪烁

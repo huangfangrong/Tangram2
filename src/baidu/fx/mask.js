@@ -29,73 +29,75 @@
  * @config      {Function}                onafterfinish     function(){},//效果结束后会执行的回调函数
  * @config      {Function}                oncancel          function(){},//效果被撤销时的回调函数
  */
-baidu.fx.mask = function(element, options) {
-    baidu.check("^HTMLElement", "baidu.fx.mask");
-    // mask 效果只适用于绝对定位的DOM元素
-    if (baidu.fx.getCurrentStyle(element, "position") != "absolute") {
-        return null;
-    }
+baidu.fx.extend({
+    mask: function(element, options) {
+        baidu.check("^HTMLElement", "baidu.fx.mask");
+        // mask 效果只适用于绝对定位的DOM元素
+        if (baidu.fx.getCurrentStyle(element, "position") != "absolute") {
+            return null;
+        }
 
-    var e = element, original = {};
-    options = options || {};
+        var e = element, original = {};
+        options = options || {};
 
-    // [startOrigin] "0px 0px" "50% 50%" "top left"
-    var r = /^(\d+px|\d?\d(\.\d+)?%|100%|left|center|right)(\s+(\d+px|\d?\d(\.\d+)?%|100%|top|center|bottom))?/i;
-    !r.test(options.startOrigin) && (options.startOrigin = "0px 0px");
+        // [startOrigin] "0px 0px" "50% 50%" "top left"
+        var r = /^(\d+px|\d?\d(\.\d+)?%|100%|left|center|right)(\s+(\d+px|\d?\d(\.\d+)?%|100%|top|center|bottom))?/i;
+        !r.test(options.startOrigin) && (options.startOrigin = "0px 0px");
 
-    var options = baidu.extend({restoreAfterFinish:true, from:0, to:1}, options || {});
+        var options = baidu.extend({restoreAfterFinish:true, from:0, to:1}, options || {});
 
-    var fx = baidu.fx.create(e, baidu.extend({
-        //[Implement Interface] initialize
-        initialize : function() {
-            e.style.display = "";
-            this.protect("clip");
-            original.width = e.offsetWidth;
-            original.height = e.offsetHeight;
+        var fx = baidu.fx.create(e, baidu.extend({
+            //[Implement Interface] initialize
+            initialize : function() {
+                e.style.display = "";
+                this.protect("clip");
+                original.width = e.offsetWidth;
+                original.height = e.offsetHeight;
 
-            // 计算效果起始点坐标
-            r.test(this.startOrigin);
-            var t1 = RegExp["\x241"].toLowerCase(),
-                t2 = RegExp["\x244"].toLowerCase(),
-                ew = this.element.offsetWidth,
-                eh = this.element.offsetHeight,
-                dx, dy;
+                // 计算效果起始点坐标
+                r.test(this.startOrigin);
+                var t1 = RegExp["\x241"].toLowerCase(),
+                    t2 = RegExp["\x244"].toLowerCase(),
+                    ew = this.element.offsetWidth,
+                    eh = this.element.offsetHeight,
+                    dx, dy;
 
-            if (/\d+%/.test(t1)) dx = parseInt(t1, 10) / 100 * ew;
-            else if (/\d+px/.test(t1)) dx = parseInt(t1);
-            else if (t1 == "left") dx = 0;
-            else if (t1 == "center") dx = ew / 2;
-            else if (t1 == "right") dx = ew;
+                if (/\d+%/.test(t1)) dx = parseInt(t1, 10) / 100 * ew;
+                else if (/\d+px/.test(t1)) dx = parseInt(t1);
+                else if (t1 == "left") dx = 0;
+                else if (t1 == "center") dx = ew / 2;
+                else if (t1 == "right") dx = ew;
 
-            if (!t2) dy = eh / 2;
-            else {
-                if (/\d+%/.test(t2)) dy = parseInt(t2, 10) / 100 * eh;
-                else if (/\d+px/.test(t2)) dy = parseInt(t2);
-                else if (t2 == "top") dy = 0;
-                else if (t2 == "center") dy = eh / 2;
-                else if (t2 == "bottom") dy = eh;
+                if (!t2) dy = eh / 2;
+                else {
+                    if (/\d+%/.test(t2)) dy = parseInt(t2, 10) / 100 * eh;
+                    else if (/\d+px/.test(t2)) dy = parseInt(t2);
+                    else if (t2 == "top") dy = 0;
+                    else if (t2 == "center") dy = eh / 2;
+                    else if (t2 == "bottom") dy = eh;
+                }
+                original.x = dx;
+                original.y = dy;
             }
-            original.x = dx;
-            original.y = dy;
-        }
 
-        //[Implement Interface] render
-        ,render : function(schedule) {
-            var n = this.to * schedule + this.from * (1 - schedule),
-                top = original.y * (1 - n) +"px ",
-                left = original.x * (1 - n) +"px ",
-                right = original.x * (1 - n) + original.width * n +"px ",
-                bottom = original.y * (1 - n) + original.height * n +"px ";
-            e.style.clip = "rect("+ top + right + bottom + left +")";
-        }
+            //[Implement Interface] render
+            ,render : function(schedule) {
+                var n = this.to * schedule + this.from * (1 - schedule),
+                    top = original.y * (1 - n) +"px ",
+                    left = original.x * (1 - n) +"px ",
+                    right = original.x * (1 - n) + original.width * n +"px ",
+                    bottom = original.y * (1 - n) + original.height * n +"px ";
+                e.style.clip = "rect("+ top + right + bottom + left +")";
+            }
 
-        //[Implement Interface] finish
-        ,finish : function(){
-            if (this.to < this.from) e.style.display = "none";
-        }
-    }, options), "baidu.fx.mask");
+            //[Implement Interface] finish
+            ,finish : function(){
+                if (this.to < this.from) e.style.display = "none";
+            }
+        }, options), "baidu.fx.mask");
 
-    return fx.launch();
-};
+        return fx.launch();
+    }
+});
 
 /// Tangram 1.x Code End

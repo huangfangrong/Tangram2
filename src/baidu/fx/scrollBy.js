@@ -1,4 +1,3 @@
-/// support magic - Tangram 1.x Code Start
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
@@ -29,40 +28,55 @@
  * @config      {Function}                onafterfinish         function(){},//效果结束后会执行的回调函数
  * @config      {Function}                oncancel              function(){},//效果被撤销时的回调函数
  */
-baidu.fx.scrollBy = function(element, distance, options) {
-    baidu.check("^HTMLElement", "baidu.fx.scrollBy");
-    if (typeof distance != "object") return null;
-    
-    var d = {}, mm = {};
-    d.x = distance[0] || distance.x || 0;
-    d.y = distance[1] || distance.y || 0;
+baidu.fx.extend({
+    scrollBy: function(element, distance, options) {
+        baidu.check("^HTMLElement", "baidu.fx.scrollBy");
+        if (typeof distance != "object") return null;
+        
+        var d = {}, mm = {};
+        d.x = distance[0] || distance.x || 0;
+        d.y = distance[1] || distance.y || 0;
 
-    var fx = baidu.fx.create(element, baidu.extend({
-        //[Implement Interface] initialize
-        initialize : function() {
-            var t = mm.sTop   = element.scrollTop;
-            var l = mm.sLeft  = element.scrollLeft;
+        var fx = baidu.fx.create(element, baidu.extend({
+            //[Implement Interface] initialize
+            initialize : function() {
+                var t = mm.sTop   = element.scrollTop;
+                var l = mm.sLeft  = element.scrollLeft;
 
-            mm.sx = Math.min(element.scrollWidth - element.clientWidth - l, d.x);
-            mm.sy = Math.min(element.scrollHeight- element.clientHeight- t, d.y);
-        }
+                var sw = element.scrollWidth
+                    ,cw= element.clientWidth
+                    ,sh= element.scrollHeight
+                    ,ch= element.clientHeight;
 
-        //[Implement Interface] transition
-        ,transition : function(percent) {return 1 - Math.pow(1 - percent, 2);}
+                if (element.tagName.toLowerCase() == "body") {
+                    var html = document.documentElement;
+                    var client = document.compatMode == 'BackCompat' ? element : html;
+                    sw = Math.max(html.scrollWidth, sw, client.clientWidth);
+                    sh = Math.max(html.scrollHeight, sh, client.clientHeight);
+                    cw = client.clientWidth;
+                    ch = client.clientHeight;
+                }
 
-        //[Implement Interface] render
-        ,render : function(schedule) {
-            element.scrollTop  = (mm.sy * schedule + mm.sTop);
-            element.scrollLeft = (mm.sx * schedule + mm.sLeft);
-        }
+                mm.sx = Math.min(sw - cw - l, d.x);
+                mm.sy = Math.min(sh - ch - t, d.y);
+            }
 
-        ,restore : function(){
-            element.scrollTop   = mm.sTop;
-            element.scrollLeft  = mm.sLeft;
-        }
-    }, options), "baidu.fx.scroll");
+            //[Implement Interface] transition
+            ,transition : function(percent) {return 1 - Math.pow(1 - percent, 2);}
 
-    return fx.launch();
-};
+            //[Implement Interface] render
+            ,render : function(schedule) {
+                element.scrollTop  = (mm.sy * schedule + mm.sTop);
+                element.scrollLeft = (mm.sx * schedule + mm.sLeft);
+            }
 
-/// support magic - Tangram 1.x Code End
+            ,restore : function(){
+                element.scrollTop   = mm.sTop;
+                element.scrollLeft  = mm.sLeft;
+            }
+        }, options), "baidu.fx.scroll");
+
+        return fx.launch();
+    }
+});
+

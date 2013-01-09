@@ -27,20 +27,22 @@
  * @config    {Function}              onafterfinish      function(){},//效果结束后会执行的回调函数
  * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
  */
-baidu.fx.zoomOut = function(element, options) {
-    baidu.check("^HTMLElement", "baidu.fx.zoomOut");
+baidu.fx.extend({
+    zoomOut: function(element, options) {
+        baidu.check("^HTMLElement", "baidu.fx.zoomOut");
 
-    options = baidu.extend({
-        to:0.1
-        ,from:1
-        ,opacityTrend:false
-        ,restoreAfterFinish:true
-        ,transition:function(n){return 1 - Math.pow(1 - n, 2);}
-    },  options||{});
+        options = baidu.extend({
+            to:0.1
+            ,from:1
+            ,opacityTrend:false
+            ,restoreAfterFinish:true
+            ,transition:function(n){return 1 - Math.pow(1 - n, 2);}
+        },  options||{});
 
-    var effect = baidu.fx.scale(element, options);
-    effect.on("afterfinish", function(){this.element.style.display = "none";});
+        var effect = baidu.fx.scale(element, options);
+        effect.on("afterfinish", function(){this.element.style.display = "none";});
 
-    return effect;
-};
+        return effect;
+    }
+});
 

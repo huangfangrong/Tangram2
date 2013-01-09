@@ -31,16 +31,18 @@
  * 1.0.0开始支持
  * @see baidu.fx.moveTo
  */
-baidu.fx.moveTo = function(element, point, options) {
-    baidu.check("^HTMLElement", "baidu.fx.moveTo");
-    if (baidu.fx.getCurrentStyle(element, "position") == "static") return null;
+baidu.fx.extend({
+    moveTo: function(element, point, options) {
+        baidu.check("^HTMLElement", "baidu.fx.moveTo");
+        if (baidu.fx.getCurrentStyle(element, "position") == "static") return null;
 
-    var p = [point[0] || point.x || 0,point[1] || point.y || 0];
-    var x = parseInt(baidu.fx.getCurrentStyle(element, "left")) || 0;
-    var y = parseInt(baidu.fx.getCurrentStyle(element, "top"))  || 0;
+        var p = [point[0] || point.x || 0,point[1] || point.y || 0];
+        var x = parseInt(baidu.fx.getCurrentStyle(element, "left")) || 0;
+        var y = parseInt(baidu.fx.getCurrentStyle(element, "top"))  || 0;
 
-    var fx = baidu.fx.move(element, baidu.extend({x: p[0]-x, y: p[1]-y}, options||{}));
+        var fx = baidu.fx.move(element, baidu.extend({x: p[0]-x, y: p[1]-y}, options||{}));
 
-    return fx;
-};
+        return fx;
+    }
+});
 

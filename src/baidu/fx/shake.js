@@ -28,49 +28,51 @@
  * @config    {Function}              onafterfinish      function(){},//效果结束后会执行的回调函数
  * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
  */
-baidu.fx.shake = function(element, offset, options) {
-    baidu.check("^HTMLElement", "baidu.fx.shake");
+baidu.fx.extend({
+    shake: function(element, offset, options) {
+        baidu.check("^HTMLElement", "baidu.fx.shake");
 
-    var e = element;
-    offset = offset || [];
-    function tt() {
-        for (var i=0; i<arguments.length; i++) {
-            if (!isNaN(arguments[i])) return arguments[i];
-        }
-    }
-
-    var fx = baidu.fx.create(e, baidu.extend({
-        //[Implement Interface] initialize
-        initialize : function() {
-            this.protect("top");
-            this.protect("left");
-            this.protect("position");
-            this.restoreAfterFinish = true;
-
-            if (baidu.fx.getCurrentStyle(e, "position") == "static") {
-                e.style.position = "relative";
+        var e = element;
+        offset = offset || [];
+        function tt() {
+            for (var i=0; i<arguments.length; i++) {
+                if (!isNaN(arguments[i])) return arguments[i];
             }
-            var original = this.data.original;
-            this.originX = parseInt(original.left|| 0);
-            this.originY = parseInt(original.top || 0);
-            this.offsetX = tt(offset[0], offset.x, 16);
-            this.offsetY = tt(offset[1], offset.y, 5);
         }
 
-        //[Implement Interface] transition
-        ,transition : function(percent) {
-            var line = 1 - percent;
-            return Math.floor(line * 16) % 2 == 1 ? line : percent - 1;
-        }
+        var fx = baidu.fx.create(e, baidu.extend({
+            //[Implement Interface] initialize
+            initialize : function() {
+                this.protect("top");
+                this.protect("left");
+                this.protect("position");
+                this.restoreAfterFinish = true;
 
-        //[Implement Interface] render
-        ,render : function(schedule) {
-            e.style.top  = (this.offsetY * schedule + this.originY) +"px";
-            e.style.left = (this.offsetX * schedule + this.originX) +"px";
-        }
-    }, options || {}), "baidu.fx.shake");
+                if (baidu.fx.getCurrentStyle(e, "position") == "static") {
+                    e.style.position = "relative";
+                }
+                var original = this.original;
+                this.originX = parseInt(original.left|| 0);
+                this.originY = parseInt(original.top || 0);
+                this.offsetX = tt(offset[0], offset.x, 16);
+                this.offsetY = tt(offset[1], offset.y, 5);
+            }
 
-    return fx.launch();
-};
+            //[Implement Interface] transition
+            ,transition : function(percent) {
+                var line = 1 - percent;
+                return Math.floor(line * 16) % 2 == 1 ? line : percent - 1;
+            }
+
+            //[Implement Interface] render
+            ,render : function(schedule) {
+                e.style.top  = (this.offsetY * schedule + this.originY) +"px";
+                e.style.left = (this.offsetX * schedule + this.originX) +"px";
+            }
+        }, options || {}), "baidu.fx.shake");
+
+        return fx.launch();
+    }
+});
 
 /// Tangram 1.x Code End

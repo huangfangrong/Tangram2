@@ -29,15 +29,17 @@
  * @config    {Function}              onafterfinish      function(){},//效果结束后会执行的回调函数
  * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
  */
-baidu.fx.scrollTo = function(element, point, options) {
-    baidu.check("^HTMLElement", "baidu.fx.scrollTo");
-    if (typeof point != "object") return null;
-    
-    var d = {};
-    d.x = (point[0] || point.x || 0) - element.scrollLeft;
-    d.y = (point[1] || point.y || 0) - element.scrollTop;
+baidu.fx.extend({
+    scrollTo: function(element, point, options) {
+        baidu.check("^HTMLElement", "baidu.fx.scrollTo");
+        if (typeof point != "object") return null;
+        
+        var d = {};
+        d.x = (point[0] || point.x || 0) - element.scrollLeft;
+        d.y = (point[1] || point.y || 0) - element.scrollTop;
 
-    return baidu.fx.scrollBy(element, d, options);
-};
+        return baidu.fx.scrollBy(element, d, options);
+    }
+});
 
 /// support magic - Tangram 1.x Code End

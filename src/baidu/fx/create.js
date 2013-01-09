@@ -31,7 +31,8 @@ baidu.fx.create = function(element, options, fxName) {
     var timeline = new baidu.fx.Timeline(options);
     var maps = baidu.global("_maps_fx");
     var id = baidu.id(element);
-    timeline.data = maps[id] = maps[id] || {original: {}, guids:{}};
+    timeline.data = maps[id] = maps[id] || {guids:{}};
+    timeline.original = {};
     timeline.element = element;
     timeline.attName = "att_"+ timeline._type_.replace(baidu.regexp("\\W", "g"), "_");
 
@@ -41,7 +42,7 @@ baidu.fx.create = function(element, options, fxName) {
      */
     timeline.protect = function(cssKey) {
         cssKey = baidu.string(cssKey).toCamelCase();
-        this.data.original[cssKey] = this.element.style[cssKey];
+        this.original[cssKey] = this.element.style[cssKey];
     }
     /**
      * @description 打扫dom元素上的痕迹，删除元素自定义属性
@@ -58,7 +59,7 @@ baidu.fx.create = function(element, options, fxName) {
      * @description 时间线结束，恢复那些被改过的CSS属性值
      */
     timeline._restore_ = function() {
-        var o = this.data.original,
+        var o = this.original,
             s = this.element.style,
             value, i;
 
@@ -81,11 +82,20 @@ baidu.fx.create = function(element, options, fxName) {
 
         if (!me.overlapping) {
             // old fx
-            (guid = data[me.attName]) && baiduInstance(guid).cancel();
+            if (guid = data[me.attName]) {
+                var old = baiduInstance(guid);
+                baidu.extend((me.oldOriginal={}), old.original);
+                old.cancel();
+            }
             //[TODO]
     
             //记录当前效果的guid
             data[me.attName] = me.guid;
+        }
+    }).on("start", function(){
+        if (this.oldOriginal) {
+            baidu.extend(this.original, this.oldOriginal);
+            delete this.oldOriginal;
         }
 
     }).on("cancel", function(){

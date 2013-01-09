@@ -28,17 +28,19 @@
  * @config    {Function}              onafterfinish      function(){},//效果结束后会执行的回调函数
  * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
  */
-baidu.fx.zoomIn = function(element, options) {
-    baidu.check("^HTMLElement", "baidu.fx.zoomIn");
+baidu.fx.extend({
+    zoomIn: function(element, options) {
+        baidu.check("^HTMLElement", "baidu.fx.zoomIn");
 
-    options = baidu.extend({
-        to:1
-        ,from:0.1
-        ,restoreAfterFinish:true
-        ,transition:function(n){return Math.pow(n, 2)}
-    },  options||{});
+        options = baidu.extend({
+            to:1
+            ,from:0.1
+            ,restoreAfterFinish:true
+            ,transition:function(n){return Math.pow(n, 2)}
+        },  options||{});
 
-    return baidu.fx.scale(element, options);
-};
+        return baidu.fx.scale(element, options);
+    }
+});
 
 /// Tangram 1.x Code End

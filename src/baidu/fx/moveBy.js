@@ -32,17 +32,19 @@
  * 1.0.0开始支持
  * @see baidu.fx.moveBy
  */
-baidu.fx.moveBy = function(element, distance, options) {
-    baidu.check("^HTMLElement", "baidu.fx.moveBy");
-    if (baidu.fx.getCurrentStyle(element, "position") == "static") return null;
+baidu.fx.extend({
+    moveBy: function(element, distance, options) {
+        baidu.check("^HTMLElement", "baidu.fx.moveBy");
+        if (baidu.fx.getCurrentStyle(element, "position") == "static") return null;
 
-    var d = {};
-    d.x = distance[0] || distance.x || 0;
-    d.y = distance[1] || distance.y || 0;
+        var d = {};
+        d.x = distance[0] || distance.x || 0;
+        d.y = distance[1] || distance.y || 0;
 
-    var fx = baidu.fx.move(element, baidu.extend(d, options||{}));
+        var fx = baidu.fx.move(element, baidu.extend(d, options||{}));
 
-    return fx;
-};
+        return fx;
+    }
+});
 
 /// Tangram 1.x Code End

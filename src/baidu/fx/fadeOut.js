@@ -28,16 +28,18 @@
  * @remark
  * 1.0.0开始支持
  */
-baidu.fx.fadeOut = function(element, options) {
-    baidu.check("^HTMLElement", "baidu.fx.fadeOut");
+baidu.fx.extend({
+    fadeOut: function(element, options) {
+        baidu.check("^HTMLElement", "baidu.fx.fadeOut");
 
-    var fx = baidu.fx.opacity(element,
-        baidu.extend({from:1, to:0, restoreAfterFinish:true}, options||{})
-    );
-    fx.on("afterfinish", function(){this.element.style.display = "none";});
-    fx._type_ = "baidu.fx.fadeOut";
+        var fx = baidu.fx.opacity(element,
+            baidu.extend({from:1, to:0, restoreAfterFinish:true}, options||{})
+        );
+        fx.on("afterfinish", function(){this.element.style.display = "none";});
+        fx._type_ = "baidu.fx.fadeOut";
 
-    return fx;
-};
+        return fx;
+    }
+});
 
 /// Tangram 1.x Code End

@@ -26,16 +26,17 @@
  * @config     {Function}               oncancel           function(){},//效果被撤销时的回调函数
  * @see baidu.fx.fadeOut
  */
+baidu.fx.extend({
+    fadeIn: function(element, options) {
+        baidu.check("^HTMLElement", "baidu.fx.fadeIn");
 
-baidu.fx.fadeIn = function(element, options) {
-    baidu.check("^HTMLElement", "baidu.fx.fadeIn");
+        var fx = baidu.fx.opacity(element,
+            baidu.extend({from:0, to:1, restoreAfterFinish:true}, options||{})
+        );
+        fx._type_ = "baidu.fx.fadeIn";
 
-    var fx = baidu.fx.opacity(element,
-        baidu.extend({from:0, to:1, restoreAfterFinish:true}, options||{})
-    );
-    fx._type_ = "baidu.fx.fadeIn";
-
-    return fx;
-};
+        return fx;
+    }
+});
 
 /// Tangram 1.x Code End

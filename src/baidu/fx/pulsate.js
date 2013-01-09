@@ -26,33 +26,35 @@
  * @config      {Function}                onafterfinish         function(){},//效果结束后会执行的回调函数
  * @config      {Function}                oncancel              function(){},//效果被撤销时的回调函数
  */
-baidu.fx.pulsate = function(element, loop, options) {
-    baidu.check("^HTMLElement", "baidu.fx.pulsate");
-    if (isNaN(loop) || loop == 0) return null;
+baidu.fx.extend({
+    pulsate: function(element, loop, options) {
+        baidu.check("^HTMLElement", "baidu.fx.pulsate");
+        if (isNaN(loop) || loop == 0) return null;
 
-    var e = element;
+        var e = element;
 
-    var fx = baidu.fx.create(e, baidu.extend({
-        //[Implement Interface] initialize
-        initialize : function() {this.protect("visibility");}
+        var fx = baidu.fx.create(e, baidu.extend({
+            //[Implement Interface] initialize
+            initialize : function() {this.protect("visibility");}
 
-        //[Implement Interface] transition
-        ,transition : function(percent) {return Math.cos(2*Math.PI*percent);}
+            //[Implement Interface] transition
+            ,transition : function(percent) {return Math.cos(2*Math.PI*percent);}
 
-        //[Implement Interface] render
-        ,render : function(schedule) {
-            e.style.visibility = schedule > 0 ? "visible" : "hidden";
-        }
+            //[Implement Interface] render
+            ,render : function(schedule) {
+                e.style.visibility = schedule > 0 ? "visible" : "hidden";
+            }
 
-        //[Implement Interface] finish
-        ,finish : function(){
-            setTimeout(function(){
-                baidu.fx.pulsate(element, --loop, options);
-            }, 10);
-        }
-    }, options), "baidu.fx.pulsate");
+            //[Implement Interface] finish
+            ,finish : function(){
+                setTimeout(function(){
+                    baidu.fx.pulsate(element, --loop, options);
+                }, 10);
+            }
+        }, options), "baidu.fx.pulsate");
 
-    return fx.launch();
-};
+        return fx.launch();
+    }
+});
 
 /// Tangram 1.x Code End

@@ -47,8 +47,8 @@ baidu.fx.move = function(element, options) {
             this.protect("top");
             this.protect("left");
 
-            this.originX = parseInt(baidu.dom.getStyle(element, "left"))|| 0;
-            this.originY = parseInt(baidu.dom.getStyle(element, "top")) || 0;
+            this.originX = parseInt(baidu.fx.getCurrentStyle(element, "left"))|| 0;
+            this.originY = parseInt(baidu.fx.getCurrentStyle(element, "top")) || 0;
         }
 
         //[Implement Interface] transition

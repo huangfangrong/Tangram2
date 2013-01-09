@@ -9,8 +9,8 @@
  */
 
 ///import baidu.fx;
-///import baidu.lang.instance;
-///import baidu.dom.g;
+///import baidu.id;
+///import baidu.global;
 
 /**
  * 获取DOM元素正在运行的效果实例列表
@@ -21,27 +21,29 @@
  * @returns {Array} 效果对象
  */
 baidu.fx.current = function(element) {
-    if (!(element = baidu.dom.g(element))) return null;
-    var a, guids, reg = /\|([^\|]+)\|/g;
+    baidu.check("^HTMLElement", "baidu.fx.current");
+
+    var id, guids = [];
+    var maps = baidu.global("_maps_fx");
+
 
     // 可以向<html>追溯
-    do {if (guids = element.getAttribute("baidu_current_effect")) break;}
-    while ((element = element.parentNode) && element.nodeType == 1);
-
-    if (!guids) return null;
-
-    if ((a = guids.match(reg))) {
-        //fix
-        //在firefox中使用g模式，会出现ture与false交替出现的问题
-        reg = /\|([^\|]+)\|/;
-        
-        for (var i=0; i<a.length; i++) {
-            reg.test(a[i]);
-//            a[i] = window[baidu.guid]._instances[RegExp["\x241"]];
-            a[i] = baidu._global_._instances[RegExp["\x241"]];
+    do {
+        if ((id = baidu.id(element)) && maps[id]) {
+            for (var i=0, n=maps[id].guids.length; i<n; i++) {
+                guids.push(maps[id].guids[i]);
+            }
         }
     }
-    return a;
+    while ((element = element.parentNode) && element.nodeType == 1);
+
+    // if (guids.length == 0) return null;
+
+    for(var i=0, n=guids.length; i<n; i++) {
+        guids[i] = baiduInstance(guids[i]);
+    }
+
+    return guids;
 };
 
 /// support magic - Tangram 1.x Code End

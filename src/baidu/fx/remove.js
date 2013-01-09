@@ -26,16 +26,17 @@
  * @config      {Function}                onafterfinish         function(){},//效果结束后会执行的回调函数
  * @config      {Function}                oncancel              function(){},//效果被撤销时的回调函数
  */
-
-baidu.fx.remove = function(element, options) {
-    var afterFinish = options.onafterfinish ? options.onafterfinish : new Function();
-    
-    return baidu.fx.fadeOut(element, baidu.extend(options||{}, {
-        onafterfinish: function(){
-            baidu.dom.remove(this.element);
-            afterFinish.call(this);
-        }
-    }));
-};
+baidu.fx.extend({
+    remove: function(element, options) {
+        var afterFinish = options.onafterfinish ? options.onafterfinish : new Function();
+        
+        return baidu.fx.fadeOut(element, baidu.extend(options||{}, {
+            onafterfinish: function(){
+                baidu.dom.remove(this.element);
+                afterFinish.call(this);
+            }
+        }));
+    }
+});
 
 /// Tangram 1.x Code End

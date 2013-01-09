@@ -1,6 +1,7 @@
 ///import baidu.type;
 ///import baidu.merge;
 ///import baidu.setBack;
+///import baidu.isElement;
 ///import baidu.createChain;
 /**
  * @description 提供各种公共的动画功能
@@ -29,3 +30,28 @@ baidu.fx = baidu.createChain("fx", function($dom){
 }, function(){
     this.length = 0;
 });
+// [overwrite]
+baidu.fx.extend = function(json) {
+    var slice = Array.prototype.slice;
+
+    for (var key in json) {
+        var fx = baidu.fx[key] = json[key];
+
+        var fn = function() {
+            var arg = slice.call(arguments, 0);
+            var array = slice.call(this, 0);
+
+            for (var i=0, n=array.length; i<n; i++) {
+                if ( baidu.isElement(array[i]) ) {
+                    array[i] = fx.apply(null, [array[i]].concat(arg));
+                } else {
+                    array[i] = null;
+                }
+            }
+            return array;
+        }
+
+        baidu.fx.fn[key] = fn;
+        baidu.dom && baidu.dom.fn && (baidu.dom.fn[key] = fn);
+    }
+};
