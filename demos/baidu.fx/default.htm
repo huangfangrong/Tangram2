@@ -2,8 +2,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script type="text/javascript" src="../../src/import.js"></script>
-<script type="text/javascript" src="../../src/import.php?f=baidu.fx.highlight"></script>
+<!-- <script type="text/javascript" src="../../src/import.js"></script> -->
+<script type="text/javascript" src="../../src/import.php?f=baidu.fx.expand,baidu.fx.collapse,baidu.fx.fadeOut,baidu.fx.fadein,baidu.fx.mask,baidu.fx.zoomIn,baidu.fx.zoomOut,baidu.fx.moveBy,baidu.fx.moveTo,baidu.fx.puff,baidu.fx.shake,baidu.fx.pulsate,baidu.fx.highlight,baidu.fx.rotate,baidu.fx.scrollTo,baidu.fx.scrollBy"></script>
+<!-- <script type="text/javascript" src="webfx.js"></script> -->
 <!--[if lt IE 9]><script type="text/javascript" src="http://fe.baidu.com/doc/webfx/script/html5.js"></script><![endif]-->
 <title>WebFX动画演示</title>
 <style type="text/css">
@@ -29,9 +30,11 @@ h1{margin: 0;}
     border-radius: 5px;
 }
 #header .summary{
-    text-align: right;
-    padding-right: 8px;
+    float: left;
+    padding-left:5px;
 }
+#header nav{text-align:right;padding-right: 8px;}
+#header nav a{color:#FF8F8F; font-size:16px;}
 #footer{
     margin-top: 8px;
     line-height: 80px;
@@ -44,7 +47,7 @@ h1{margin: 0;}
 /* =Article
 ----------------------------------------------- */
 article{
-    margin-top: 8px;
+    margin-top: 1em;
     padding: 8px;
     background-color: #FFF;
     border-radius: 5px;
@@ -55,6 +58,7 @@ article header{
     padding-left: 5px;
     border-bottom: 2px solid #888;
 }
+article header a{float:right;}
 article .content p{text-indent: 2em;}
 article.demo .content td{
     width:160px;
@@ -72,6 +76,46 @@ article.demo .content td div{
     background: transparent url(http://fe.baidu.com/doc/webfx/css/yuan.png) no-repeat;
 }
 article.demo .content td div b{display: block; margin-top:1em;}
+/* =Article.api
+----------------------------------------------- */
+article.api header{margin-bottom: 5px;}
+article.api .primary{
+    width: 100%;
+    float: left;
+    margin-right: -160px;
+}
+article.api .second{
+    width: 160px;
+    float: right;
+}
+article.api .content{
+    margin-right:170px;
+}
+article.api aside{
+    padding: 1px;
+    margin-bottom: 5px;
+    border:1px solid #EEEEEE;
+}
+article.api h3,
+article.api ul,
+article.api li{margin: 0; padding: 0;}
+article.api aside li{margin-left: 1.5em; line-height: 1.8em; cursor: pointer;}
+article.api h3{padding: 3px 5px; background-color: #F7F7F7;}
+article.api dl{padding: 1px; border:1px solid #EEEEEE; padding-bottom: 0; margin-top:5px;}
+article.api dt{font-weight: bold; padding: 2px 5px; background-color: #EEEEEE; margin-bottom: 1px;}
+article.api dd{margin-bottom: 0.5em; padding:5px; padding-left: 2em;}
+article.api .content dd p{margin-top: 0;}
+article.api li.focused{background-color: #000080; color:#FFFFFF;}
+article.api tr.private{display: none; background-color:#FFF0F0;}
+/* =Article.example
+----------------------------------------------- */
+article.example table{background-color: #F7F7F7;}
+article.example table td{background-color: #EEEEEE;}
+article.example .params input{width:80px;}
+article.example #exm_div{width:100px; height:100px; position:absolute; top:50px; left:50px; background-color:#008000; color:#F00; font-weight:bold; cursor:pointer; font-size:32px;border-radius: 8px; box-shadow: 3px 3px 7px #CCC;}
+article.example #div_lines{width:200px; height:200px; background-color: #FFF; position:relative}
+article.example #div_lines div{position:absolute; width:1px; background-color:#888; bottom:0px;}
+table#tab_events input{text-align: left}
 </style>
 </head>
 <body>
@@ -81,6 +125,12 @@ article.demo .content td div b{display: block; margin-top:1em;}
     <header id="header">
         <h1>百度WebFX动画演示</h1>
         <div class="summary">2012.12.21 世界末日</div>
+        <nav> &nbsp;
+            <a href="#demo">演示</a> &nbsp;
+            <a href="#example">样例</a> &nbsp;
+            <a href="#api">API说明</a> &nbsp;
+            <a href="http://fe.baidu.com/doc/webfx/webfx.zip">下载</a> &nbsp;
+        </nav>
     </header>
 
     <div id="main">
@@ -92,13 +142,13 @@ article.demo .content td div b{display: block; margin-top:1em;}
 <article>
     <header>前 言</header>
     <div class="content">
-        <p>在本演示文档里，将演示 WebFX.js 里所有脚本动画！</p>
+        <p>在本演示文档里，将演示 <a href="http://fe.baidu.com/doc/webfx/webfx.js">WebFX.js</a> 里所有脚本动画！</p>
         <p>这里只演示脚本动画，CSS3动画有单独的演示页面。</p>
     </div>
 </article>
 
-<article class="demo">
-    <header>演 示</header>
+<article class="demo"><a name="demo"></a>
+    <header><a href="#">top</a>演 示</header>
     <div class="content">
         <table border="0" cellspacing="20px">
             <tr>
@@ -182,6 +232,587 @@ article.demo .content td div b{display: block; margin-top:1em;}
     </div>
 </article>
 
+<article class="example"><a name="example"></a>
+    <header><a href="#">top</a>样 例 Example</header>
+    <div class="content">
+        <table border="0" cellspacing="8px" width="100%" style="margin-top:0.5em">
+            <tr>
+                <td class="params" rowspan="2" width="240px" style="vertical-align:top">
+                    <fieldset id="fld_required_param" style="display: none">
+                        <legend>必选参数</legend>
+                        <div id="div_required_param"></div>                       
+                    </fieldset>
+                    <fieldset id="fld_private_param" style="display: none">
+                        <legend>自有参数</legend>
+                        <div id="div_private_param"></div>                       
+                    </fieldset>
+                        <label for="txtDuration">动画时长</label><input title="duration" id="txtDuration" value="500" />毫秒
+                    <br><label for="txtDelay">　　延时</label><input title="delay" id="txtDelay" value="0" />毫秒
+                    <br><label for="txtInterval">脉冲时长</label><input title="interval" id="txtInterval" value="12" />毫秒
+                    <br><label for="txtFps">最大帧率</label><input title="fps" id="txtFps" value="80" />帧/秒
+                    <br><label for="txtFrames">最少帧数</label><input title="frames" id="txtFrames" value="0" />帧
+                    <br><label for="txtFrom">　　　从</label><input title="from" id="txtFrom" value="0" />
+                    <br><label for="txtTo">　　　到</label><input title="to" id="txtTo" value="1" />
+                </td>
+                <td style="background-color:#FFF">
+                    <select id="sel_fx" onchange="select_fx(this)" style="font-size:18px; color:blue">
+                        <option>请选择网页动画</option>
+                        <option value="expand" selected="true">expand 展开</option>
+                        <option value="collapse">collapse 收拢</option>
+                        <option value="fadeOut">fadeOut 渐隐</option>
+                        <option value="fadeIn">fadeIn 渐显</option>
+                        <option value="mask">mask 遮罩</option>
+                        <option value="zoomIn">zoomIn 放大</option>
+                        <option value="zoomOut">zoomOut 缩小</option>
+                        <option value="moveBy">moveBy 移动</option>
+                        <option value="moveTo">moveTo 移到</option>
+                        <option value="puff">puff 膨胀</option>
+                        <option value="pulsate">pulsate 心跳</option>
+                        <option value="shake">shake 颤抖</option>
+                        <option value="rotate">rotate 旋转</option>
+                        <option value="highlight">highlight 高亮</option>
+                        <option value="scrollBy">scrollBy 滚动</option>
+                        <option value="scrollTo">scrollTo 滚至</option>
+                    </select>
+                    <input type="button" value="运行" onclick="run_example(document.getElementById('exm_div'))" />
+                    <input type="button" value="复原" onclick="document.getElementById('exm_div').style.cssText = ''" />
+                </td>
+                <td rowspan="3" width="240px" style="vertical-align:top">
+                    动画线型
+                    <div style="padding-left:20px;">
+                        <div id="div_lines"></div>
+                    </div>
+                    动画进度 &nbsp;<span id="showPercent">0</span>
+                    <br>帧间进度 &nbsp;<span id="showDelta">0</span>
+                    <br>当 前 帧 &nbsp;<span id="showFrame">0</span> 帧
+                    <br>帧 &nbsp; 率 &nbsp;<span id="showFPS">0</span> 帧/秒
+                    <br>耗 &nbsp; 时 &nbsp;<span id="showTime">0</span> 毫秒
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color:#FFF">
+                    <div style="height:300px; position:relative; overflow:auto;">
+                        <div id="exm_div" onclick="run_example(this)">点击我运行</div>
+                        <div style="height:1000px"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" value="↓ 添加事件监听函数 ↓" onclick="var tab=document.getElementById('tab_events'); tab.style.display=tab.style.display=='none'?'':'none'" />
+                </td>
+                <td height="30px">
+                    <input type="button" id="btnPlay" value="play"/>
+                    <input type="button" id="btnPause" value="pause"/>
+                    <input type="button" id="btnCancel" value="cancel"/>
+                    <input type="button" id="btnEnd" value="end"/>
+                    <input type="button" id="btnAbort" value="abort"/>
+                </td>
+            </tr>
+        </table>
+        <table id="tab_events" border="0" cellspacing="8px" width="100%" style="display:none">
+            <tr>
+                <td width="240px" style="text-align:right"><label for="evt_transition">线型函数 transition</label></td>
+                <td><input id="evt_transition" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_onbeforestart">onbeforestart</label></td>
+                <td><input id="evt_onbeforestart" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_onstart">onstart</label></td>
+                <td><input id="evt_onstart" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_onupdate">onupdate</label></td>
+                <td><input id="evt_onupdate" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_onfinish">onfinish</label></td>
+                <td><input id="evt_onfinish" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_onafterfinish">onafterfinish</label></td>
+                <td><input id="evt_onafterfinish" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_onabort">onabort</label></td>
+                <td><input id="evt_onabort" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_oncancel">oncancel</label></td>
+                <td><input id="evt_oncancel" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_onend">onend</label></td>
+                <td><input id="evt_onend" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_onpause">onpause</label></td>
+                <td><input id="evt_onpause" type="text" size="108"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><label for="evt_ondispose">ondispose</label></td>
+                <td><input id="evt_ondispose" type="text" size="108"></td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+
+    var required_params = {
+         moveTo : ["position", '<label for="txt_position">移动到</label><input id="txt_position" value="[50, 50]">[x, y]']
+        ,moveBy : ["distance", '<label for="txt_distance">移动距离</label><input id="txt_distance" value="[50, 50]">[x, y]']
+        ,pulsate : ["times", '<label for="txt_times">心跳次数</label><input id="txt_times" value="5">次']
+        ,rotate : ["ang", '<label for="txt_ang">旋转角度</label><input id="txt_ang" value="90">度']
+        ,scrollTo : ["position", '<label for="txt_position">滚动到</label><input id="txt_position" value="[50, 50]">[x, y]']
+        ,scrollBy : ["distance", '<label for="txt_distance">滚动距离</label><input id="txt_distance" value="[50, 50]">[x, y]']
+    };
+    var private_params = {
+        highlight : [
+            "beginColor", '<label for="txt_beginColor">起始背景色</label><input title="beginColor" id="txt_beginColor" value="" />'
+            , "endColor", '<br><label for="txt_endColor">结束背景色</label><input title="endColor" id="txt_endColor" value="#FFFF00" />'
+            , "finalColor", '<br><label for="txt_finalColor">最终背景色</label><input title="finalColor" id="txt_finalColor" value="" />'
+            , "textColor", '<br><label for="txt_textColor">文字颜色</label><input title="textColor" id="txt_textColor" value="#0000FF" />'
+        ]
+        ,mask : [
+            "startOrigin", '<label for="txt_startOrigin">startOrigin</label><input id="txt_startOrigin" value="0px 0px" title="startOrigin 可赋值 \'0px 0px\' 或 \'20% 30%\' 或 \'top left\' " />'
+        ]
+    }
+
+    void function(){
+        var html = "";
+        var events = ["beforestart", "start", "update", "finish", "afterfinish", "abort", "cancel", "end", "dispose"]
+        var G = function(id){return document.getElementById(id)};
+        for(var i=0; i<200; i++) {
+            html += "<div style='left:"+i+"px; bottom:0px;'></div>";
+        }
+        G("div_lines").innerHTML = html;
+
+
+        window.select_fx = function(select) {
+            var fxName = select.options[select.selectedIndex].value;
+            if (!fxName) return;
+
+            var param = required_params[fxName];
+            G("fld_required_param").style.display = param ? "" : "none";
+            G("div_required_param").innerHTML = param ? param[1] : "";
+
+            var param = private_params[fxName];
+            G("fld_private_param").style.display = param ? "" : "none";
+            if (param) {
+                var html = ""
+                for(var i=0; i<param.length; i=i+2) {
+                    html += param[i+1];
+                }
+                G("div_private_param").innerHTML = html;
+            }
+        }
+
+        window.run_example = function(div) {
+            var select = G("sel_fx");
+            var fxName = select.options[select.selectedIndex].value;
+            if (!fxName) return;
+            var fn = baidu.fx[fxName];
+
+            var duration = G("txtDuration").value
+                , delay = G("txtDelay").value
+                , interval = G("txtInterval").value
+                , fps = G("txtFps").value
+                , frames = G("txtFrames").value
+                , from = G("txtFrom").value
+                , to = G("txtTo").value
+                , op = {}
+
+            duration != "500" && ( op.duration = parseInt(duration) );
+            delay != "0" && ( op.delay = parseInt(delay) );
+            interval != "12" && ( op.interval = parseInt(interval) );
+            fps != "80" && ( op.fps = parseInt(fps) );
+            frames != "0" && ( op.frames = parseInt(frames) );
+            from != "0" && ( op.from = parseInt(from) );
+            to != "1" && ( op.to = parseInt(to) );
+            op.onbeforestart = function(){
+                var play  = G("btnPlay");
+                var pause = G("btnPause");
+                var cancel= G("btnCancel");
+                var end   = G("btnEnd");
+                var abort = G("btnAbort");
+                play.disabled = pause.disabled = cancel.disabled =
+                end.disabled = abort.disabled = false;
+            }
+            if (~fxName.indexOf("scroll")) div = div.parentNode;
+            var arg = [div], param;
+            required_params[fxName] && arg.push( (new Function("return "+ G("txt_"+ required_params[fxName][0]).value ))() );
+            arg.push(op);
+
+            if (param = private_params[fxName]) {
+                for(var i=0; i<param.length; i=i+2) {
+                    op[param[i]] = G("txt_"+ param[i]).value;
+                }
+            }
+
+            return attach(fn.apply(null, arg));
+        }
+
+        function attach(fx){
+            if (!fx) return;
+            var frame = 0;
+            var lines = G("div_lines").childNodes;
+            var play  = G("btnPlay");
+            var pause = G("btnPause");
+            var cancel= G("btnCancel");
+            var end   = G("btnEnd");
+            var abort = G("btnAbort");
+
+            for (var i=lines.length-1; i>-1; i--) lines[i].style.height = "0px";
+            fx.on("update", function(e){
+                var fx = e.currentTarget;
+                var time = new Date().getTime() - fx._beginTime_;
+                G("showDelta").innerHTML = fx.delta.toFixed(3);
+                G("showPercent").innerHTML = fx.percent;
+                G("showFrame").innerHTML = ++ frame;
+                G("showTime").innerHTML = time;
+                G("showFPS").innerHTML = Math.floor(frame*1000/time);
+
+                var len = lines.length;
+                var from = Math.floor(len * (fx.percent - fx.delta));
+                var to = Math.floor(len * fx.percent);
+                for (var i=from; i<to; i++) {
+                    lines[i].style.height = Math.floor(fx.transition(i/len)*len) +"px";
+                }
+            });
+
+            fx.on("dispose", function() {
+                play.disabled = pause.disabled = cancel.disabled =
+                end.disabled = abort.disabled = true;
+            })
+
+            play.onclick = function(){
+                fx.play();
+            }
+            pause.onclick = function(){
+                fx.pause();
+            }
+            cancel.onclick = function(){
+                fx.cancel();
+            }
+            end.onclick = function(){
+                fx.end();
+            }
+            abort.onclick = function(){
+                fx.abort();
+            }
+
+            for (var i=events.length-1; i>-1; i--) {
+                var ename = events[i];
+                var str = G("evt_on"+ ename).value;
+                var fn = (new Function("return "+ str))();
+                if (baidu.isFunction(fn)) {
+                    fx.on(ename, fn);
+                }
+            }
+
+            return fx;
+        }
+    }();
+    </script>
+</article>
+
+<article class="api"><a name="api"></a>
+    <header><a href="#">top</a>使用说明</header>
+    <div class="primary">
+        <div class="content" id="api_content">
+            <h3>baidu.fx.<span>collapse</span>()</h3>
+            <dl>
+                <dt onclick="toggle(this)">语法</dt>
+                <dd style="font-size:18px">
+                    baidu( <a href="#selector">selector</a>[, <a href="#context">context</a>] ).<span>collapse</span>( <label id="r_p_1">[</label><a href="#options">options</a>] );
+                    <br/>
+                    baidu.fx( <a href="#jQuery">jQuery</a>|<a href="#$DOM">$DOM</a>|<a href="#NodeList">NodeList</a> ).<span>collapse</span>( <label id="r_p_2">[</label><a href="#options">options</a>] );
+                    <br/>
+                    baidu.fx.<span>collapse</span>( <a href="#element">element</a><label id="r_p_3">[, </label><a href="#options">options</a>] );
+                </dd>
+                <dt onclick="toggle(this)">参数说明</dt>
+                <dd style="display:none">
+                    <a name="selector"></a>selector<p>CSS选择器字符串</p>
+                    <a name="context"></a>context<p>[可选]指选择器的范围</p>
+                    <a name="jQuery"></a>jQuery<p>通过jQuery的 $() 取得的DOM元素集合对象</p>
+                    <a name="$DOM"></a>$DOM<p>通过Tangram的 baidu() 或 baidu.dom() 取得的DOM元素集合对象</p>
+                    <a name="NodeList"></a>NodeList<p>通过 document.getElementsByTagName() 或者 dom.childNodes 或者 document.images 等方式取得的DOM元素集合</p>
+                    <a name="element"></a>element<p>DOM对象</p>
+                </dd>
+                <dt onclick="toggle(this)"><a name="options"></a>options</dt>
+                <dd>
+                    <table id="options" border="1" cellpadding="2" cellspacing="0" width="100%" bordercolor="#CCC" style="border-collapse: collapse">
+                        <tr style="background-color:#EEE">
+                            <th>名称</th>
+                            <th>类型</th>
+                            <th>含义</th>
+                            <th>取值</th>
+                        </tr>
+                        <tr class="property private mask">
+                            <td>startOrigin</td>
+                            <td>属性</td>
+                            <td>遮罩效果的起始点</td>
+                            <td>"0px 0px" 或 "50% 50%" 或 "top left"</td>
+                        </tr>
+                        <tr class="property private highlight">
+                            <td>beginColor</td>
+                            <td>属性</td>
+                            <td>起始的背景色</td>
+                            <td>#FFFF00</td>
+                        </tr>
+                        <tr class="property private highlight">
+                            <td>endColor</td>
+                            <td>属性</td>
+                            <td>结束时的背景色</td>
+                            <td>#FFFFFF</td>
+                        </tr>
+                        <tr class="property private highlight">
+                            <td>finalColor</td>
+                            <td>属性</td>
+                            <td>最终呈现的背景色</td>
+                            <td>#FFFFFF</td>
+                        </tr>
+                        <tr class="property private highlight">
+                            <td>textColor</td>
+                            <td>属性</td>
+                            <td>文本颜色</td>
+                            <td>#000000</td>
+                        </tr>
+                        <tr class="property">
+                            <td>duration</td>
+                            <td>属性</td>
+                            <td>动画时长</td>
+                            <td>正整数（单位：毫秒）</td>
+                        </tr>
+                        <tr class="property">
+                            <td>delay</td>
+                            <td>属性</td>
+                            <td>延时指定时长再开始动画</td>
+                            <td>正整数（单位：毫秒）</td>
+                        </tr>
+                        <tr class="property">
+                            <td>delta</td>
+                            <td>只读属性</td>
+                            <td>动画两帧之间的进度</td>
+                            <td>小数</td>
+                        </tr>
+                        <tr class="property">
+                            <td>percent</td>
+                            <td>只读属性</td>
+                            <td>动画进度的百分比值</td>
+                            <td>小数</td>
+                        </tr>
+                        <tr class="property">
+                            <td>interval</td>
+                            <td>属性</td>
+                            <td>两帧之间的最小间隔时间</td>
+                            <td>正整数（毫秒）</td>
+                        </tr>
+                        <tr class="property">
+                            <td>fps</td>
+                            <td>属性</td>
+                            <td>动画最大帧率</td>
+                            <td>正整数（单位：次/秒）</td>
+                        </tr>
+                        <tr class="property">
+                            <td>frames</td>
+                            <td>属性</td>
+                            <td>动画至少帧数，可能会延时保帧</td>
+                            <td>正整数</td>
+                        </tr>
+                        <tr class="property">
+                            <td>from</td>
+                            <td>属性</td>
+                            <td>动画起始的进度</td>
+                            <td> 0-1 的小数（包括0和1）</td>
+                        </tr>
+                        <tr class="property">
+                            <td>to</td>
+                            <td>属性</td>
+                            <td>动画终止的进度</td>
+                            <td> 0-1 的小数（包括0和1）</td>
+                        </tr>
+                        <tr class="method">
+                            <td>transtion()</td>
+                            <td>方法</td>
+                            <td>动画的线型函数</td>
+                            <td>function(percent){return percent}</td>
+                        </tr>
+                        <tr class="event">
+                            <td>onbeforestart</td>
+                            <td>事件</td>
+                            <td>在动画运行之前触发</td>
+                            <td>function</td>
+                        </tr>
+                        <tr class="event">
+                            <td>onstart</td>
+                            <td>事件</td>
+                            <td>在动画运行之后触发</td>
+                            <td>function</td>
+                        </tr>
+                        <tr class="event">
+                            <td>onupdate</td>
+                            <td>事件</td>
+                            <td>动画过程中，持续触发</td>
+                            <td>function</td>
+                        </tr>
+                        <tr class="event">
+                            <td>onfinish</td>
+                            <td>事件</td>
+                            <td>动画准备结束时触发</td>
+                            <td>function</td>
+                        </tr>
+                        <tr class="event">
+                            <td>onafterfinish</td>
+                            <td>事件</td>
+                            <td>动画结束后触发</td>
+                            <td>function</td>
+                        </tr>
+                        <tr class="event">
+                            <td>ondispose</td>
+                            <td>事件</td>
+                            <td>动画被析构时触发</td>
+                            <td>function</td>
+                        </tr>
+                        <tr class="event">
+                            <td>onabort</td>
+                            <td>事件</td>
+                            <td>动画被强行中断触发</td>
+                            <td>function</td>
+                        </tr>
+                        <tr class="event">
+                            <td>onend</td>
+                            <td>事件</td>
+                            <td>动画被直接结束时触发</td>
+                            <td>function</td>
+                        </tr>
+                        <tr class="event">
+                            <td>oncancel</td>
+                            <td>事件</td>
+                            <td>动画被取消时触发</td>
+                            <td>function</td>
+                        </tr>
+                        <tr class="event">
+                            <td>onpause</td>
+                            <td>事件</td>
+                            <td>动画被暂停时触发</td>
+                            <td>function</td>
+                        </tr>
+                    </table>
+                </dd>
+                <dt onclick="toggle(this)">动画的操作方法</dt>
+                <dd style="display:none">
+                    <table border="1" cellpadding="2" cellspacing="0" width="100%" bordercolor="#CCC" style="border-collapse: collapse">
+                        <tr style="background-color:#EEE">
+                            <th>名称</th>
+                            <th>类型</th>
+                            <th>含义</th>
+                        </tr>
+                        <tr class="method">
+                            <td>play()</td>
+                            <td>方法</td>
+                            <td>开始执行动画，或者重启被暂停的动画</td>
+                        </tr>
+                        <tr class="method">
+                            <td>pause()</td>
+                            <td>方法</td>
+                            <td>暂停动画</td>
+                        </tr>
+                        <tr class="method">
+                            <td>abort()</td>
+                            <td>方法</td>
+                            <td>强行中断动画</td>
+                        </tr>
+                        <tr class="method">
+                            <td>cancel()</td>
+                            <td>方法</td>
+                            <td>取消动画</td>
+                        </tr>
+                        <tr class="method">
+                            <td>end()</td>
+                            <td>方法</td>
+                            <td>直接结束</td>
+                        </tr>
+                    </table>
+                </dd>
+                <dt onclick="toggle(this)">二次开发</dt>
+                <dd style="display:none">
+                    <table border="1" cellpadding="2" cellspacing="0" width="100%" bordercolor="#CCC" style="border-collapse: collapse">
+                        <tr style="background-color:#EEE">
+                            <th>名称</th>
+                            <th>类型</th>
+                            <th>含义</th>
+                        </tr>
+                        <tr>
+                            <td>baidu.fx.create(element, methods, fxName)</td>
+                            <td>方法</td>
+                            <td>通过这个方法可以快速创建动画<br>methods里可传递5个方法：<br>
+                                1、initialize()<br>
+                                2、render(percent)<br>
+                                3、finish()<br>
+                                2、restore()<br>
+                                2、transition(percent)<br><br>
+                                create()方法对 Timeline 类扩展了：<br>
+                                protect(cssKey)<br>
+                                restoreAfterFinish<br>
+                                两个属于/方法
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>baidu.fx.extend({fx})</td>
+                            <td>方法</td>
+                            <td>该方法会创建<br>
+                                静态方法：baidu.fx.fxName()<br>
+                                链式调用：baidu.fx().fxName()<br>
+                                DOM链式：baidu().fxName()
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>baidu.fx.Timeline([options])</td>
+                            <td>类</td>
+                            <td>属性/方法/事件 参考 <a href="#options">options</a></td>
+                        </tr>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="second">
+        <aside>
+            <h3>动画函数</h3>
+            <ul onclick="select_api(event)">
+                <li>expand</li>
+                <li class="focused">collapse</li>
+                <li>fadeOut</li>
+                <li>fadeIn</li>
+                <li>mask</li>
+                <li>zoomIn</li>
+                <li>zoomOut</li>
+                <li>moveBy</li>
+                <li>moveTo</li>
+                <li>puff</li>
+                <li>pulsate</li>
+                <li>shake</li>
+                <li>rotate</li>
+                <li>highlight</li>
+                <li>scrollBy</li>
+                <li>scrollTo</li>
+            </ul>
+        </aside>
+
+        <aside>
+            <h3>动画基础方法</h3>
+            <ul>
+                <li>baidu.fx.Timeline()</li>
+                <li>baidu.fx.create()</li>
+                <li>baidu.fx.current()</li>
+            </ul>
+        </aside>
+    </div>
+    <div style="clear:both"></div>
+</article>
             </div>
         </section>
 
@@ -192,29 +823,79 @@ article.demo .content td div b{display: block; margin-top:1em;}
 
 <script type="text/javascript">
 //*
-Import("baidu.fx.expand");
-Import("baidu.fx.collapse");
-Import("baidu.fx.fadeOut");
-Import("baidu.fx.fadeIn");
-Import("baidu.fx.mask");
+// Import("baidu.fx.expand");
+// Import("baidu.fx.collapse");
+// Import("baidu.fx.fadeOut");
+// Import("baidu.fx.fadeIn");
+// Import("baidu.fx.mask");
 
-Import("baidu.fx.zoomIn");
-Import("baidu.fx.zoomOut");
-Import("baidu.fx.moveBy");
-Import("baidu.fx.moveTo");
-Import("baidu.fx.puff");
+// Import("baidu.fx.zoomIn");
+// Import("baidu.fx.zoomOut");
+// Import("baidu.fx.moveBy");
+// Import("baidu.fx.moveTo");
+// Import("baidu.fx.puff");
 
-Import("baidu.fx.shake");
-Import("baidu.fx.pulsate");
+// Import("baidu.fx.shake");
+// Import("baidu.fx.pulsate");
 // Import("baidu.fx.highlight");
-Import("baidu.fx.rotate");
+// Import("baidu.fx.rotate");
 
-Import("baidu.fx.getCurrentStyle");
+// Import("baidu.fx.scrollTo");
+// Import("baidu.fx.scrollBy");
+
+// Import("baidu.fx.getCurrentStyle");
+
+void  function(){
+    var table = document.getElementById("options");
+    var G = function(id){return document.getElementById(id)};
+    for (var i=1, n=table.rows.length; i<n; i++) {
+        var tr = table.rows[i];
+        tr.onmouseover = function(){baidu.fx.highlight(this, {beginColor:"#FFFFFF", endColor:"#D4D0C8"});}
+        tr.onmouseout  = function(){baidu.fx.highlight(this, {beginColor:"#D4D0C8", endColor:"#FFFFFF"});}
+    }
+
+    var spans = document.getElementById("api_content").getElementsByTagName("span");
+
+    window.select_api = function(e) {
+        e = window.event || e;
+        e = e.target || e.srcElement;
+        e.nodeType == 3 && (e = e.parentNode);
+        if (e.nodeName.toLowerCase() != "li") return;
+        if (!select_api.old) select_api.old = e.parentNode.getElementsByTagName("li")[1];
+        if (select_api.old == e) return;
+        select_api.old.className = "";
+        (select_api.old=e).className = "focused";
+        var fxName = e.innerHTML;
+        baidu.forEach(spans, function(item){
+            item.innerHTML = fxName;
+        });
+        var reqParam = required_params[fxName];
+        G("r_p_1").innerHTML = reqParam ? reqParam[0] +"[, " : "[";
+        G("r_p_2").innerHTML = reqParam ? reqParam[0] +"[, " : "[";
+        G("r_p_3").innerHTML = reqParam ? ", "+ reqParam[0] +"[, " : "[,";
+
+        baidu.forEach(table.rows, function(tr){
+            if (~tr.className.indexOf(fxName)) tr.style.display = "table-row";
+            else tr.style.display = "";
+        })
+    }
+
+    window.toggle = function(dt){
+        var dl = dt.parentNode
+            bb = false;
+        for(var i=0, n=dl.childNodes.length; i<n; i++) {
+            var dom = dl.childNodes[i];
+            if (dom == dt) bb = true;
+            if (bb && dom.nodeName && dom.nodeName.toLowerCase() == "dd") {
+                baidu.fx[ dom.style.display=="none" ? "expand" : "collapse" ](dom);
+                break;
+            }
+        }
+    }
+}();
 
 
-document.ondblclick = function(){
-    baidu.fx.mask("div");
-}
+
 </script>
 
 </body>
