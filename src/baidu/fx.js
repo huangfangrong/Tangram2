@@ -48,7 +48,7 @@ baidu.fx.extend = function(json) {
                     array[i] = null;
                 }
             }
-            return array;
+            return array.length == 1 ? array[0] : array;
         }
 
         baidu.fx.fn[key] = fn;
