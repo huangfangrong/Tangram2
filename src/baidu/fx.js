@@ -44,6 +44,7 @@ baidu.fx.extend = function(json) {
             for (var i=0, n=array.length; i<n; i++) {
                 if ( baidu.isElement(array[i]) ) {
                     array[i] = fx.apply(null, [array[i]].concat(arg));
+                    baidu.setBack(array[i], this);
                 } else {
                     array[i] = null;
                 }
